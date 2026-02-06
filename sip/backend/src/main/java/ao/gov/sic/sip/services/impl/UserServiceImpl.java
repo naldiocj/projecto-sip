@@ -71,6 +71,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Response<?> deleteUser(Long id) {
+        if (!userRepository.existsById(id)) {
+            throw new NotFoundException("User not found");
+        }
+        userRepository.deleteById(id);
+        return Response.builder()
+                .statusCode(HttpStatus.OK.value())
+                .message("User deleted successfully")
+                .build();
+    }
+
+    @Override
     public Response<List<UserDTO>> getAllUsers() {
         log.info("Iniciando a lista de usuários ...");
         List<UserDTO> pilots = userRepository.findAll().stream()

@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
@@ -17,6 +19,8 @@ import java.util.List;
 @Table(name = "users")
 @AllArgsConstructor
 @NoArgsConstructor
+@SQLDelete(sql = "UPDATE users SET is_deleted = true WHERE id=?")
+@SQLRestriction("is_deleted=false")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,6 +50,8 @@ public class User {
     private List<Role> roles = new ArrayList<>();
 
     private boolean active;
+
+    private boolean isDeleted = Boolean.FALSE;
 
     @Column(updatable = false)
     @CreationTimestamp

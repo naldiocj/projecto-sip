@@ -27,18 +27,18 @@ CREATE INDEX idx_usuarios_nome ON usuarios USING gin(nome gin_trgm_ops);
 CREATE INDEX idx_usuarios_created_at ON usuarios(created_at DESC);
 
 -- ========================================
--- 1.1. TABELA: CLASSES, PATENTES, CARGOS, DIRECTORES
+-- 1.1. TABELA: CATEGORIAS, PATENTES, CARGOS, DIRECTORES
 -- ========================================
-CREATE TABLE classes (
+CREATE TABLE categorias (
     id BIGSERIAL PRIMARY KEY,
-    descricao VARCHAR(255) NOT NULL,
+    nome VARCHAR(255) NOT NULL,
     usuario_id BIGINT REFERENCES usuarios(id) ON DELETE SET NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 CREATE TABLE patentes (
     id BIGSERIAL PRIMARY KEY,
-    descricao VARCHAR(255) NOT NULL,
+    nome VARCHAR(255) NOT NULL,
     classe_id INT REFERENCES classes(id) ON DELETE SET NULL,
     usuario_id BIGINT REFERENCES usuarios(id) ON DELETE SET NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -47,7 +47,8 @@ CREATE TABLE patentes (
 
 CREATE TABLE direccoes (
     id BIGSERIAL PRIMARY KEY,
-    descricao VARCHAR(255) NOT NULL,
+    nome VARCHAR(255) NOT NULL,
+    descriao VARCHAR(255) NOT NULL,
     usuario_id BIGINT REFERENCES usuarios(id) ON DELETE SET NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -71,17 +72,16 @@ CREATE TABLE directores (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- ========================================
--- 2. TABELA: TIPOS_PROCESSOS
--- ========================================
-CREATE TABLE tipos_processos (
+CREATE TABLE instrutores (
     id BIGSERIAL PRIMARY KEY,
-    descricao VARCHAR(255) NOT NULL UNIQUE,
+    nome_completo VARCHAR(255) NOT NULL,
+    patente_id INT REFERENCES patentes(id) ON DELETE SET NULL,
+    cargo_id INT REFERENCES cargos(id) ON DELETE SET NULL,
+    direccao_id INT REFERENCES direccoes(id) ON DELETE SET NULL,
+    usuario_id BIGINT REFERENCES usuarios(id) ON DELETE SET NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
-CREATE INDEX idx_tipos_processos_descricao ON tipos_processos(descricao);
 
 -- ========================================
 -- 16. TABELA: TIPOS_DECLARACOES
@@ -103,6 +103,7 @@ CREATE TABLE processos (
     descricao TEXT,
     numero VARCHAR(50) NOT NULL UNIQUE,
     tipo_processo_id BIGINT NOT NULL REFERENCES tipos_processos(id) ON DELETE RESTRICT,
+    queixoso_id BIGINT REFERENCES queixosos(id) ON DELETE SET NULL,
     usuario_id INT NOT NULL REFERENCES usuarios(usuario_id) ON DELETE SET NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -171,13 +172,13 @@ CREATE INDEX idx_magistrados_processo ON magistrados(processo_id);
 CREATE TABLE tipos_advogados (
     id BIGSERIAL PRIMARY KEY,
     descricao VARCHAR(255) NOT NULL UNIQUE,
-   usuario_id BIGINT REFERENCES usuarios(id) ON DELETE SET NULL,
+    usuario_id BIGINT REFERENCES usuarios(id) ON DELETE SET NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- ========================================
--- 8. TABELA: ADVOGADOS
+-- 8. TABELA: ADVOGADOS | ENUM: DEFESA, ACUSACAO
 -- ========================================
 CREATE TABLE advogados (
     id BIGSERIAL PRIMARY KEY,
@@ -307,14 +308,8 @@ CREATE INDEX idx_livros_data ON livros_registos(data_ocorrencia);
 CREATE TABLE capas_processos (
     id BIGSERIAL PRIMARY KEY,
     ano VARCHAR(4),
-    numero_processo VARCHAR(50),
     numero_expediente VARCHAR(50),
-    magistrado_id BIGINT REFERENCES magistrados(id) ON DELETE SET NULL,
-    instructor_id BIGINT REFERENCES usuarios(id) ON DELETE SET NULL,
-    crime_id BIGINT REFERENCES tipos_crimes(id) ON DELETE SET NULL,
-    queixoso_id BIGINT REFERENCES queixosos(id) ON DELETE SET NULL,
-    arguido VARCHAR(255),
-    data_ocorrencia TIMESTAMP,
+    data_emissao TIMESTAMP,
     endereco VARCHAR(500),
     descricao TEXT,
     livro_registo_id BIGINT REFERENCES livros_registos(id) ON DELETE SET NULL,
@@ -337,9 +332,6 @@ CREATE INDEX idx_capas_queixoso ON capas_processos(queixoso_id);
 CREATE TABLE cartas_precatorias (
     id BIGSERIAL PRIMARY KEY,
     numero_carta VARCHAR(50) UNIQUE,
-    numero_processo VARCHAR(50),
-    instructor_id BIGINT REFERENCES usuarios(id) ON DELETE SET NULL,
-    crime_id BIGINT REFERENCES tipos_crimes(id) ON DELETE SET NULL,
     deprecante VARCHAR(255),
     data_ocorrencia TIMESTAMP,
     endereco VARCHAR(500),

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @SecurityRequirement(name = "bearerAuth")
 public class RoleController {
     private static final String ROLES_PATH = "/api/v1/roles";
+    private static final String ROLES_PATH_ID = ROLES_PATH + "/{roleId}";
     private final RoleService roleService;
 
     @PostMapping(ROLES_PATH)
@@ -28,6 +29,12 @@ public class RoleController {
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Response<?>> updateRole(@Valid @RequestBody RoleDTO roleDTO) {
         return ResponseEntity.ok(roleService.updateRole(roleDTO));
+    }
+
+    @DeleteMapping(ROLES_PATH_ID)
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<Response<?>> deleteRole(@PathVariable("roleId") Long roleId) {
+        return ResponseEntity.ok(roleService.deleteRole(roleId));
     }
 
     @GetMapping(ROLES_PATH)

@@ -6,6 +6,7 @@ import ao.gov.sic.sip.services.PatenteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,5 +31,11 @@ public class PatenteController {
     @PreAuthorize("hasAnyAuthority('ADMIN', 'AGENT')")
     public ResponseEntity<Response<?>> getPatentById(@PathVariable("patenteId") Long patenteId) {
         return ResponseEntity.ok(patenteService.getPatenteById(patenteId));
+    }
+
+    @DeleteMapping(PATENT_PATH_ID)
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    public ResponseEntity<?> deletePatentById(@PathVariable("patenteId") Long patenteId) {
+        return ResponseEntity.ok(patenteService.deletePatenteById(patenteId));
     }
 }

@@ -4,6 +4,8 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Builder
 @Data
 public class PatenteDTO {
@@ -13,4 +15,7 @@ public class PatenteDTO {
     private String nome;
 
     private CategoriaDTO categoria;
+    private boolean isDeleted;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }

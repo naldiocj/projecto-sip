@@ -1,0 +1,22 @@
+CREATE TABLE arguidos (
+    id BIGSERIAL PRIMARY KEY,
+    nomeCompleto VARCHAR(255),
+    nome_pai VARCHAR(255),
+    nome_mae VARCHAR(255),
+    estado_civil VARCHAR(255),
+    idade INTEGER,
+    data_nascimento DATE,
+    naturalidade VARCHAR(255),
+    profissao VARCHAR(255),
+    numero_bi VARCHAR(255),
+    data_emissao_bi VARCHAR(255),
+    email VARCHAR(255),
+    telefone VARCHAR(255),
+    endereco_id BIGINT,
+    user_id BIGINT,
+    is_deleted BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP,
+    CONSTRAINT fk_arguidos_endereco FOREIGN KEY (endereco_id) REFERENCES enderecos (id),
+    CONSTRAINT fk_arguidos_user FOREIGN KEY (user_id) REFERENCES users (id)
+);

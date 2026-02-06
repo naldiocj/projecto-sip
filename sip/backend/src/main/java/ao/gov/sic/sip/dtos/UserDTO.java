@@ -3,16 +3,14 @@ package ao.gov.sic.sip.dtos;
 import ao.gov.sic.sip.entities.Role;
 import ao.gov.sic.sip.enums.AuthMethod;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
+@Builder
 public class UserDTO {
     private Long id;
     private String name;

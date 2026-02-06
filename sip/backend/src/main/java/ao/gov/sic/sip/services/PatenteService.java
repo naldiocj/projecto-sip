@@ -8,5 +8,7 @@ import java.util.List;
 public interface PatenteService {
     Response<PatenteDTO> getPatenteById(Long id);
 
+    Response<?> deletePatenteById(Long id);
+
     Response<List<PatenteDTO>> getAllPatentes();
 }

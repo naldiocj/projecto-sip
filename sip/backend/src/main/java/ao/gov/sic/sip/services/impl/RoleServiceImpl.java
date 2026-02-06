@@ -30,7 +30,7 @@ public class RoleServiceImpl implements RoleService {
         roleRepository.save(role);
 
         return Response.builder()
-                .statusCode(HttpStatus.OK.value())
+                .statusCode(HttpStatus.CREATED.value())
                 .message("Role Created Successfully")
                 .build();
     }
@@ -47,6 +47,18 @@ public class RoleServiceImpl implements RoleService {
         return Response.builder()
                 .statusCode(HttpStatus.OK.value())
                 .message("Role Updated Successfully")
+                .build();
+    }
+
+    @Override
+    public Response<?> deleteRole(Long id) {
+        if (!roleRepository.existsById(id)) {
+            throw new NotFoundException("Role not found");
+        }
+        roleRepository.deleteById(id);
+        return Response.builder()
+                .statusCode(HttpStatus.OK.value())
+                .message("Role Deleted Successfully")
                 .build();
     }
 

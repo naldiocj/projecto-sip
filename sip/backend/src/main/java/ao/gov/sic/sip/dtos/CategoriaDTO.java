@@ -1,14 +1,15 @@
 package ao.gov.sic.sip.dtos;
 
-import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class CategoriaDTO {
     private Long id;
-
     private String nome;
 }

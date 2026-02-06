@@ -1,15 +1,23 @@
 package ao.gov.sic.sip.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
-@Data
 @Table(name = "patentes")
-@AllArgsConstructor
+@Setter
+@Getter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
+@SQLDelete(sql = "UPDATE patentes SET is_deleted = true WHERE id=?")
+@SQLRestriction("is_deleted=false")
 public class Patente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,4 +29,13 @@ public class Patente {
     @ManyToOne
     @JoinColumn(name = "categoria_id")
     Categoria categoria;
+
+    private boolean isDeleted = Boolean.FALSE;
+
+    @Column(updatable = false)
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 }
