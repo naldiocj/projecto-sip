@@ -13,6 +13,8 @@ public class BootstrapData implements CommandLineRunner {
     private final RolesAndUsers rolesAndUsers;
     private final ProvinciasAndMunicipios provinciasAndMunicipios;
     private final Distritos distritos;
+    private final TiposCrimes tiposCrimes;
+    private final ResourcesAndActions resourcesAndActions;
 
     @Override
     public void run(String... args) throws Exception {
@@ -20,5 +22,7 @@ public class BootstrapData implements CommandLineRunner {
         categoriesAndPatentes.loadData();
         provinciasAndMunicipios.loadData();
         distritos.loadData();
+        tiposCrimes.loadData();
+        resourcesAndActions.loadData();
     }
 }

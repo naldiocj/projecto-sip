@@ -25,6 +25,7 @@ public class Provincia {
 
     private String nome;
 
+    @Builder.Default
     private boolean isDeleted = Boolean.FALSE;
 
     @Column(updatable = false)

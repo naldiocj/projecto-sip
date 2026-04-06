@@ -1,7 +1,7 @@
 package ao.gov.sic.sip.services.impl;
 
-import ao.gov.sic.sip.dtos.TermoEntregaDTO;
 import ao.gov.sic.sip.dtos.Response;
+import ao.gov.sic.sip.dtos.TermoEntregaDTO;
 import ao.gov.sic.sip.entities.Endereco;
 import ao.gov.sic.sip.entities.Processo;
 import ao.gov.sic.sip.entities.TermoEntrega;

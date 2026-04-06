@@ -1,6 +1,7 @@
 CREATE TABLE processos (
     id BIGSERIAL PRIMARY KEY,
     nome VARCHAR(255),
+    arquivo VARCHAR(255),
     descricao TEXT,
     numero VARCHAR(255),
     tipo_processo VARCHAR(255),

@@ -109,4 +109,17 @@ public class MunicipioServiceImpl implements MunicipioService {
                 .data(municipios)
                 .build();
     }
+
+    @Override
+    public Response<List<MunicipioDTO>> getAllByProvinciaId(Long id) {
+        List<MunicipioDTO> municipios = municipioRepository.findMunicipioByProvincia_Id(id)
+                .stream().map(municipioMapper::municipioToMunicipioDTO)
+                .toList();
+
+        return Response.<List<MunicipioDTO>>builder()
+                .statusCode(HttpStatus.OK.value())
+                .message(municipios.isEmpty() ? "Nenhum município encontrado" : "Municípios encontrados com sucesso")
+                .data(municipios)
+                .build();
+    }
 }

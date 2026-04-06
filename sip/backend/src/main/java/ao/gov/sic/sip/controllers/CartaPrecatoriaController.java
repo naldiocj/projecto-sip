@@ -20,13 +20,13 @@ public class CartaPrecatoriaController {
     private final CartaPrecatoriaService cartaPrecatoriaService;
 
     @GetMapping(CARTA_PRECATORIA_PATH)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
     public ResponseEntity<Response<List<CartaPrecatoriaDTO>>> getAllCartasPrecatorias() {
         return ResponseEntity.ok(cartaPrecatoriaService.getAll());
     }
 
     @GetMapping(CARTA_PRECATORIA_PATH_ID)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
     public ResponseEntity<Response<?>> getCartaPrecatoriaById(@PathVariable("cartaPrecatoriaId") Long cartaPrecatoriaId) {
         return ResponseEntity.ok(cartaPrecatoriaService.getById(cartaPrecatoriaId));
     }

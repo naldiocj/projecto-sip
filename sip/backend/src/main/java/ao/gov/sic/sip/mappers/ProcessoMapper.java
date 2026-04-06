@@ -1,6 +1,8 @@
 package ao.gov.sic.sip.mappers;
 
 import ao.gov.sic.sip.dtos.ProcessoDTO;
+import ao.gov.sic.sip.dtos.ProcessoDetailDTO;
+import ao.gov.sic.sip.dtos.ProcessoResDTO;
 import ao.gov.sic.sip.entities.Arguido;
 import ao.gov.sic.sip.entities.Processo;
 import ao.gov.sic.sip.entities.TipoCrime;
@@ -10,7 +12,7 @@ import org.mapstruct.Mapping;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Mapper
+@Mapper(uses = {TipoCrimeMapper.class, ArguidoMapper.class, QueixosoMapper.class, MagistradoMapper.class, InstrutorMapper.class, UserMapper.class, ItemMapper.class})
 public interface ProcessoMapper {
     @Mapping(source = "queixosoId", target = "queixoso.id")
     @Mapping(source = "magistradoId", target = "magistrado.id")
@@ -27,6 +29,17 @@ public interface ProcessoMapper {
     @Mapping(source = "crimes", target = "crimesIds")
     @Mapping(source = "arguidos", target = "arguidosIds")
     ProcessoDTO processoToProcessoDTO(Processo entity);
+
+    @Mapping(source = "queixoso.id", target = "queixosoId")
+    @Mapping(source = "magistrado.id", target = "magistradoId")
+    @Mapping(source = "instrutor.id", target = "instrutorId")
+    @Mapping(source = "user.id", target = "userId")
+    @Mapping(source = "crimes", target = "crimes")
+    @Mapping(source = "arguidos", target = "arguidosIds")
+    ProcessoDetailDTO processoToProcessoDetailDTO(Processo entity);
+
+    @Mapping(source = "estadoProcesso", target = "estadoProcesso")
+    ProcessoResDTO processoToProcessoResDTO(Processo entity);
 
     default Set<Long> mapCrimesToIds(Set<TipoCrime> crimes) {
         if (crimes == null) {

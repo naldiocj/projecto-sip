@@ -20,13 +20,13 @@ public class PeritoExameDirectoAvaliacaoController {
     private final PeritoExameDirectoAvaliacaoService peritoExameDirectoAvaliacaoService;
 
     @GetMapping(PERITO_EXAME_DIRECTO_AVALIACAO_PATH)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
     public ResponseEntity<Response<List<PeritoExameDirectoAvaliacaoDTO>>> getAllPeritosExamesDirectosAvaliacoes() {
         return ResponseEntity.ok(peritoExameDirectoAvaliacaoService.getAll());
     }
 
     @GetMapping(PERITO_EXAME_DIRECTO_AVALIACAO_PATH_ID)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
     public ResponseEntity<Response<?>> getPeritoExameDirectoAvaliacaoById(@PathVariable("peritoExameDirectoAvaliacaoId") Long peritoExameDirectoAvaliacaoId) {
         return ResponseEntity.ok(peritoExameDirectoAvaliacaoService.getById(peritoExameDirectoAvaliacaoId));
     }

@@ -4,10 +4,12 @@ import ao.gov.sic.sip.dtos.AutoAcariacaoDTO;
 import ao.gov.sic.sip.dtos.Response;
 import ao.gov.sic.sip.services.AutoAcariacaoService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -16,17 +18,18 @@ import java.util.List;
 public class AutoAcariacaoController {
     private final static String AUTO_ACARIACAO_PATH = "/api/v1/autos-acariacoes";
     private final static String AUTO_ACARIACAO_PATH_ID = AUTO_ACARIACAO_PATH + "/{autoAcariacaoId}";
+    private final static String AUTO_ACARIACAO_PATH_UPLOAD = AUTO_ACARIACAO_PATH_ID + "/upload";
 
     private final AutoAcariacaoService autoAcariacaoService;
 
     @GetMapping(AUTO_ACARIACAO_PATH)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
     public ResponseEntity<Response<List<AutoAcariacaoDTO>>> getAllAutosAcariacoes() {
         return ResponseEntity.ok(autoAcariacaoService.getAll());
     }
 
     @GetMapping(AUTO_ACARIACAO_PATH_ID)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
     public ResponseEntity<Response<?>> getAutoAcariacaoById(@PathVariable("autoAcariacaoId") Long autoAcariacaoId) {
         return ResponseEntity.ok(autoAcariacaoService.getById(autoAcariacaoId));
     }
@@ -47,5 +50,11 @@ public class AutoAcariacaoController {
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<?> deleteAutoAcariacaoById(@PathVariable("autoAcariacaoId") Long autoAcariacaoId) {
         return ResponseEntity.ok(autoAcariacaoService.deleteById(autoAcariacaoId));
+    }
+
+    @PostMapping(value = AUTO_ACARIACAO_PATH_UPLOAD, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    public ResponseEntity<?> uploadArquivo(@PathVariable("autoAcariacaoId") Long autoAcariacaoId, @RequestParam("file") MultipartFile file) {
+        return ResponseEntity.ok(autoAcariacaoService.uploadArquivo(autoAcariacaoId, file));
     }
 }

@@ -1,7 +1,7 @@
 package ao.gov.sic.sip.services;
 
-import ao.gov.sic.sip.dtos.TermoEntregaDTO;
 import ao.gov.sic.sip.dtos.Response;
+import ao.gov.sic.sip.dtos.TermoEntregaDTO;
 
 import java.util.List;
 

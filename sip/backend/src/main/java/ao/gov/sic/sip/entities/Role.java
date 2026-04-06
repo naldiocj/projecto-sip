@@ -28,6 +28,7 @@ public class Role {
     @Column(unique = true)
     private String name;
 
+    @Builder.Default
     private boolean isDeleted = Boolean.FALSE;
 
     @Column(updatable = false)

@@ -53,12 +53,16 @@ public class AutoAditamentoServiceImpl implements AutoAditamentoService {
             Endereco endereco = enderecoRepository.findById(dto.getEnderecoId())
                     .orElseThrow(() -> new NotFoundException("Endereço não encontrado"));
             autoAditamento.setEndereco(endereco);
+        } else {
+            autoAditamento.setEndereco(null);
         }
 
         if (dto.getProcessoId() != null) {
             Processo processo = processoRepository.findById(dto.getProcessoId())
                     .orElseThrow(() -> new NotFoundException("Processo não encontrado"));
             autoAditamento.setProcesso(processo);
+        } else {
+            throw new NotFoundException("Processo não encontrado");
         }
 
         if (dto.getUserId() != null) {

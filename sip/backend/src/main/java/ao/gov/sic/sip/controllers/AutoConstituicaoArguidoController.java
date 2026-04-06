@@ -20,13 +20,13 @@ public class AutoConstituicaoArguidoController {
     private final AutoConstituicaoArguidoService autoConstituicaoArguidoService;
 
     @GetMapping(AUTO_CONSTITUICAO_ARGUIDO_PATH)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
     public ResponseEntity<Response<List<AutoConstituicaoArguidoDTO>>> getAllAutosConstituicoesArguidos() {
         return ResponseEntity.ok(autoConstituicaoArguidoService.getAll());
     }
 
     @GetMapping(AUTO_CONSTITUICAO_ARGUIDO_PATH_ID)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
     public ResponseEntity<Response<?>> getAutoConstituicaoArguidoById(@PathVariable("autoConstituicaoArguidoId") Long autoConstituicaoArguidoId) {
         return ResponseEntity.ok(autoConstituicaoArguidoService.getById(autoConstituicaoArguidoId));
     }

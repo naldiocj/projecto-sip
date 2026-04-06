@@ -1,16 +1,14 @@
 package ao.gov.sic.sip.services.impl;
 
-import ao.gov.sic.sip.dtos.TestemunhaDTO;
 import ao.gov.sic.sip.dtos.Response;
-import ao.gov.sic.sip.entities.Endereco;
-import ao.gov.sic.sip.entities.Testemunha;
-import ao.gov.sic.sip.entities.User;
+import ao.gov.sic.sip.dtos.TestemunhaDTO;
+import ao.gov.sic.sip.entities.*;
+import ao.gov.sic.sip.enums.TipoParticipante;
 import ao.gov.sic.sip.exceptions.NotFoundException;
 import ao.gov.sic.sip.mappers.TestemunhaMapper;
-import ao.gov.sic.sip.repositories.EnderecoRepository;
-import ao.gov.sic.sip.repositories.TestemunhaRepository;
-import ao.gov.sic.sip.repositories.UserRepository;
+import ao.gov.sic.sip.repositories.*;
 import ao.gov.sic.sip.services.TestemunhaService;
+import ao.gov.sic.sip.services.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -27,6 +25,9 @@ public class TestemunhaServiceImpl implements TestemunhaService {
     private final TestemunhaMapper testemunhaMapper;
     private final EnderecoRepository enderecoRepository;
     private final UserRepository userRepository;
+    private final UserService userService;
+    private final ProcessoRepository processoRepository;
+    private final ParticipanteRepository participanteRepository;
 
     @Override
     public Response<TestemunhaDTO> getById(Long id) {
@@ -55,15 +56,32 @@ public class TestemunhaServiceImpl implements TestemunhaService {
             Endereco endereco = enderecoRepository.findById(dto.getEnderecoId())
                     .orElseThrow(() -> new NotFoundException("Endereço não encontrado"));
             testemunha.setEndereco(endereco);
+        } else {
+            testemunha.setEndereco(null);
         }
 
         if (dto.getUserId() != null) {
             User user = userRepository.findById(dto.getUserId())
                     .orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
             testemunha.setUser(user);
+        } else {
+            User user = userService.currentUser();
+            testemunha.setUser(user);
         }
 
-        testemunhaRepository.save(testemunha);
+        Testemunha savedTestemunha = testemunhaRepository.save(testemunha);
+
+        Processo processo = processoRepository.findById(dto.getProcessoId())
+                .orElseThrow(()-> new NotFoundException("Processo não encontrado"));
+
+        participanteRepository.save(Participante.builder()
+                .advogado(null)
+                .arguido(null)
+                .queixoso(null)
+                .testemunha(savedTestemunha)
+                .processo(processo)
+                .tipoParticipante(TipoParticipante.TESTEMUNHA)
+                .build());
 
         return Response.builder()
                 .statusCode(HttpStatus.CREATED.value())

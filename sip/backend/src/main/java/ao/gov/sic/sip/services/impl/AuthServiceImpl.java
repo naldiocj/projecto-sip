@@ -4,11 +4,16 @@ import ao.gov.sic.sip.dtos.LoginRequest;
 import ao.gov.sic.sip.dtos.LoginResponse;
 import ao.gov.sic.sip.dtos.RegistrationRequest;
 import ao.gov.sic.sip.dtos.Response;
+import ao.gov.sic.sip.entities.Action;
+import ao.gov.sic.sip.entities.Resource;
 import ao.gov.sic.sip.entities.Role;
 import ao.gov.sic.sip.entities.User;
+import ao.gov.sic.sip.enums.ActionType;
 import ao.gov.sic.sip.enums.AuthMethod;
 import ao.gov.sic.sip.exceptions.BadRequestException;
 import ao.gov.sic.sip.exceptions.NotFoundException;
+import ao.gov.sic.sip.exceptions.UnauthorizedException;
+import ao.gov.sic.sip.repositories.ResourceRepository;
 import ao.gov.sic.sip.repositories.RoleRepository;
 import ao.gov.sic.sip.repositories.UserRepository;
 import ao.gov.sic.sip.security.JwtUtils;
@@ -19,7 +24,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static ao.gov.sic.sip.utils.Constants.INSTRUTOR;
 
@@ -32,6 +39,7 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtUtils jwtUtils;
     private final RoleRepository roleRepository;
+    private final ResourceRepository resourceRepository;
 
     @Override
     public Response<?> register(RegistrationRequest registrationRequest) {
@@ -82,7 +90,7 @@ public class AuthServiceImpl implements AuthService {
         }
 
         if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-            throw new BadRequestException("Invalid credentials");
+            throw new UnauthorizedException("Invalid credentials");
         }
 
         String token = jwtUtils.generateToken(user.getEmail());
@@ -90,9 +98,24 @@ public class AuthServiceImpl implements AuthService {
         List<String> roleNames = user.getRoles().stream()
                 .map(Role::getName).toList();
 
+        List<Long> rolesIds = user.getRoles().stream()
+                .map(Role::getId).toList();
+
         LoginResponse loginResponse = new LoginResponse();
         loginResponse.setToken(token);
         loginResponse.setRoles(roleNames);
+
+       for (Long roleId : rolesIds) {
+          Map<String, Set<ActionType>> actions = new HashMap<>();
+          List<Resource> resources = resourceRepository.findAllByRole_Id(roleId);
+
+          for (Resource resource : resources) {
+              Set<Action> resourceActions = resource.getActions();
+              actions.put(resource.getName(), resourceActions.stream().map(Action::getName).collect(Collectors.toSet()));
+          }
+
+          loginResponse.setActions(actions);
+       }
 
         return Response.<LoginResponse>builder()
                 .statusCode(HttpStatus.OK.value())

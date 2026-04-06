@@ -39,14 +39,14 @@ public class StorageFileServiceImpl implements StorageFileService {
     }
 
     @Override
-    public FileRecord save(MultipartFile csvFile) {
-        String fileName = generateUniqueName(csvFile);
+    public FileRecord save(MultipartFile file) {
+        String fileName = generateUniqueName(file);
         try {
             if (fileName.contains("..")) {
                 throw new RuntimeException("Nome de arquivo inválido.");
             }
             Path targetLocation = this.fileStorageLocation.resolve(fileName);
-            Files.copy(csvFile.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
             return new FileRecord(new File(targetLocation.toString()), fileName);
         } catch (IOException e) {
             throw new RuntimeException("Erro ao salvar arquivo: " + fileName, e);
@@ -67,5 +67,22 @@ public class StorageFileServiceImpl implements StorageFileService {
             throw new RuntimeException("Erro ao deletar arquivo: " + fileName, e);
         }
 
+    }
+
+    @Override
+    public FileRecord saveToFolder(MultipartFile file, String dirName) {
+        String fileName = generateUniqueName(file);
+        try {
+            if (fileName.contains("..")) {
+                throw new RuntimeException("Nome de arquivo inválido.");
+            }
+            Path targetDir = this.fileStorageLocation.resolve(dirName).normalize();
+            Files.createDirectories(targetDir);
+            Path targetLocation = targetDir.resolve(fileName).normalize();
+            Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+            return new FileRecord(targetLocation.toFile(), fileName);
+        } catch (IOException e) {
+            throw new RuntimeException("Erro ao salvar arquivo: " + fileName, e);
+        }
     }
 }

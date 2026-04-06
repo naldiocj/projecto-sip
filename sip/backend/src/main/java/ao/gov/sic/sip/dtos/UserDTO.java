@@ -19,10 +19,13 @@ public class UserDTO {
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Boolean emailVerified;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private AuthMethod provider;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String providerId;
-    private List<Role> roles;
+    private List<RoleDTO> roles;
     private Boolean active;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

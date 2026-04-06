@@ -3,6 +3,7 @@ package ao.gov.sic.sip.controllers;
 import ao.gov.sic.sip.dtos.AdvogadoDTO;
 import ao.gov.sic.sip.dtos.Response;
 import ao.gov.sic.sip.services.AdvogadoService;
+import ao.gov.sic.sip.utils.ProcessoUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,31 +21,33 @@ public class AdvogadoController {
     private final AdvogadoService advogadoService;
 
     @GetMapping(ADVOGADO_PATH)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
     public ResponseEntity<Response<List<AdvogadoDTO>>> getAllAdvogados() {
         return ResponseEntity.ok(advogadoService.getAll());
     }
 
     @GetMapping(ADVOGADO_PATH_ID)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
     public ResponseEntity<Response<?>> getAdvogadoById(@PathVariable("advogadoId") Long advogadoId) {
+
         return ResponseEntity.ok(advogadoService.getById(advogadoId));
     }
 
     @PostMapping(ADVOGADO_PATH)
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'SECRETARIA')")
     public ResponseEntity<?> createAdvogado(@Validated @RequestBody AdvogadoDTO dto) {
+        dto.setProcessoNumero(ProcessoUtils.cvtToProcessoNumero(dto.getProcessoNumero()));
         return ResponseEntity.ok(advogadoService.create(dto));
     }
 
     @PostMapping(ADVOGADO_PATH_ID)
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SECRETARIA')")
     public ResponseEntity<?> updateAdvogadoById(@RequestBody AdvogadoDTO dto, @PathVariable("advogadoId") Long advogadoId) {
         return ResponseEntity.ok(advogadoService.updateById(dto, advogadoId));
     }
 
     @DeleteMapping(ADVOGADO_PATH_ID)
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SECRETARIA')")
     public ResponseEntity<?> deleteAdvogadoById(@PathVariable("advogadoId") Long advogadoId) {
         return ResponseEntity.ok(advogadoService.deleteById(advogadoId));
     }

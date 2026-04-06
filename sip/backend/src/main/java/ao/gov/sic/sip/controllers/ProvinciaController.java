@@ -20,13 +20,13 @@ public class ProvinciaController {
     private final ProvinciaService provinciaService;
 
     @GetMapping(PROVINCIA_PATH)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
     public ResponseEntity<Response<List<ProvinciaDTO>>> getAllProvincias() {
         return ResponseEntity.ok(provinciaService.getAll());
     }
 
     @GetMapping(PROVINCIA_PATH_ID)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
     public ResponseEntity<Response<?>> getProvinciaById(@PathVariable("provinciaId") Long provinciaId) {
         return ResponseEntity.ok(provinciaService.getById(provinciaId));
     }

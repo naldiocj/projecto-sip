@@ -3,6 +3,7 @@ package ao.gov.sic.sip.entities;
 import ao.gov.sic.sip.enums.AuthMethod;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;

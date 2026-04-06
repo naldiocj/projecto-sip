@@ -44,11 +44,19 @@ public class RolesAndUsers {
 
             RegistrationRequest instrutor = new RegistrationRequest();
             instrutor.setName("Instrutor");
-            instrutor.setEmail("instrutor@sic.gov.ao");
+            instrutor.setEmail("instrutor1@sic.gov.ao");
             instrutor.setPassword("123456");
             instrutor.setPhoneNumber("-");
             instrutor.setRoles(List.of(INSTRUTOR));
             authController.register(instrutor);
+
+            RegistrationRequest instrutor1 = new RegistrationRequest();
+            instrutor1.setName("Instrutor");
+            instrutor1.setEmail("instrutor@sic.gov.ao");
+            instrutor1.setPassword("123456");
+            instrutor1.setPhoneNumber("-");
+            instrutor1.setRoles(List.of(INSTRUTOR));
+            authController.register(instrutor1);
 
             RegistrationRequest piquete = new RegistrationRequest();
             piquete.setName("PIQUETE");
@@ -65,6 +73,14 @@ public class RolesAndUsers {
             pgr.setPhoneNumber("-");
             pgr.setRoles(List.of(PGR));
             authController.register(pgr);
+
+            RegistrationRequest secretaria = new RegistrationRequest();
+            secretaria.setName("SECRETARIA");
+            secretaria.setEmail("secretaria@sic.gov.ao");
+            secretaria.setPassword("123456");
+            secretaria.setPhoneNumber("-");
+            secretaria.setRoles(List.of(SECRETARIA));
+            authController.register(secretaria);
         }
     }
 
@@ -76,7 +92,8 @@ public class RolesAndUsers {
                     DIRECTOR,
                     INSTRUTOR,
                     PIQUETE,
-                    PGR
+                    PGR,
+                    SECRETARIA
             );
             for (String roleName : rolesNames) {
                 Role role = new Role();

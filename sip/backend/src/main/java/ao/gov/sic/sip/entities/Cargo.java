@@ -27,6 +27,7 @@ public class Cargo {
     private String sigla;
     private String descricao;
 
+    @Builder.Default
     private boolean isDeleted = Boolean.FALSE;
 
     @ManyToOne

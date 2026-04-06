@@ -1,6 +1,6 @@
 CREATE TABLE advogados (
     id BIGSERIAL PRIMARY KEY,
-    nomeCompleto VARCHAR(255),
+    nome_completo VARCHAR(255),
     numero_cedula VARCHAR(255) UNIQUE,
     tipo_advogado VARCHAR(255),
     processo_id BIGINT,

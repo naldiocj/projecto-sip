@@ -3,14 +3,18 @@ package ao.gov.sic.sip.services.impl;
 import ao.gov.sic.sip.dtos.AdvogadoDTO;
 import ao.gov.sic.sip.dtos.Response;
 import ao.gov.sic.sip.entities.Advogado;
+import ao.gov.sic.sip.entities.Participante;
 import ao.gov.sic.sip.entities.Processo;
 import ao.gov.sic.sip.entities.User;
+import ao.gov.sic.sip.enums.TipoParticipante;
 import ao.gov.sic.sip.exceptions.NotFoundException;
 import ao.gov.sic.sip.mappers.AdvogadoMapper;
 import ao.gov.sic.sip.repositories.AdvogadoRepository;
+import ao.gov.sic.sip.repositories.ParticipanteRepository;
 import ao.gov.sic.sip.repositories.ProcessoRepository;
 import ao.gov.sic.sip.repositories.UserRepository;
 import ao.gov.sic.sip.services.AdvogadoService;
+import ao.gov.sic.sip.services.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -27,6 +31,8 @@ public class AdvogadoServiceImpl implements AdvogadoService {
     private final AdvogadoMapper advogadoMapper;
     private final ProcessoRepository processoRepository;
     private final UserRepository userRepository;
+    private final ParticipanteRepository participanteRepository;
+    private final UserService userService;
 
     @Override
     public Response<AdvogadoDTO> getById(Long id) {
@@ -44,6 +50,14 @@ public class AdvogadoServiceImpl implements AdvogadoService {
 
     @Override
     public Response<?> create(AdvogadoDTO dto) {
+        Processo processoFounded = processoRepository.findFirstByNumero(dto.getProcessoNumero());
+
+        if (processoFounded == null) {
+            throw new NotFoundException("Processo não encontrado");
+        }
+
+        dto.setProcessoId(processoFounded.getId());
+
         Advogado founded = advogadoRepository.findByNumeroCedula(dto.getNumeroCedula());
         if (founded != null) {
             throw new RuntimeException("Advogado já existe");
@@ -55,15 +69,38 @@ public class AdvogadoServiceImpl implements AdvogadoService {
             Processo processo = processoRepository.findById(dto.getProcessoId())
                     .orElseThrow(() -> new NotFoundException("Processo não encontrado"));
             advogado.setProcesso(processo);
+        } else {
+            advogado.setProcesso(null);
         }
 
         if (dto.getUserId() != null) {
             User user = userRepository.findById(dto.getUserId())
                     .orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
             advogado.setUser(user);
+        } else {
+            User user = userService.currentUser();
+            advogado.setUser(user);
         }
 
-        advogadoRepository.save(advogado);
+        if (dto.getProcessoId() != null) {
+            Processo processo = processoRepository.findById(dto.getProcessoId())
+                    .orElseThrow(() -> new NotFoundException("Processo não encontrado"));
+
+            Advogado savedAdvogado = advogadoRepository.save(advogado);
+
+            Participante participanteFounded = participanteRepository.findFirstByAdvogado(advogado);
+
+            if (participanteFounded == null) {
+                participanteRepository.save(Participante.builder()
+                        .advogado(savedAdvogado)
+                        .arguido(null)
+                        .queixoso(null)
+                        .testemunha(null)
+                        .processo(processo)
+                        .tipoParticipante(TipoParticipante.ADVOGADO)
+                        .build());
+            }
+        }
 
         return Response.builder()
                 .statusCode(HttpStatus.CREATED.value())
@@ -92,6 +129,9 @@ public class AdvogadoServiceImpl implements AdvogadoService {
             }
             if (StringUtils.hasText(dto.getNumeroCedula())) {
                 advogado.setNumeroCedula(dto.getNumeroCedula());
+            }
+            if (StringUtils.hasText(dto.getTelefone())) {
+                advogado.setTelefone(dto.getTelefone());
             }
             if (dto.getTipoAdvogado() != null) {
                 advogado.setTipoAdvogado(dto.getTipoAdvogado());

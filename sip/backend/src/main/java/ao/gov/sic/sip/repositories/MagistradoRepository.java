@@ -8,6 +8,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MagistradoRepository extends JpaRepository<Magistrado, Long> {
-    @Query("SELECT m FROM Magistrado m WHERE LOWER(m.nomeCompleto) = LOWER(:nome)")
-    Magistrado findByNomeIgnoreCase(@Param("nomeCompleto") String nomeCompleto);
+    Magistrado findByNomeCompletoIgnoreCase(String nomeCompleto);
 }

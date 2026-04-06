@@ -22,13 +22,13 @@ public class InstrutorController {
     private final InstrutorService instrutorService;
 
     @GetMapping(INSTRUTOR_PATH)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
     public ResponseEntity<Response<List<InstrutorDTO>>> getAllInstrutores() {
         return ResponseEntity.ok(instrutorService.getAll());
     }
 
     @GetMapping(INSTRUTOR_PATH_ID)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
     public ResponseEntity<Response<?>> getInstrutorById(@PathVariable("instrutorId") Long instrutorId) {
         return ResponseEntity.ok(instrutorService.getById(instrutorId));
     }

@@ -20,13 +20,13 @@ public class CategoriaController {
     private final CategoriaService categoriaService;
 
     @GetMapping(PATENT_PATH)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
     public ResponseEntity<Response<List<CategoriaDTO>>> getAllCategorias() {
         return ResponseEntity.ok(categoriaService.getAll());
     }
 
     @GetMapping(PATENT_PATH_ID)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
     public ResponseEntity<Response<?>> getCategoriaById(@PathVariable("categoriaId") Long categoriaId) {
         return ResponseEntity.ok(categoriaService.getById(categoriaId));
     }

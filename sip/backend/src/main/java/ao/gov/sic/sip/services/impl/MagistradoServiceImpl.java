@@ -51,7 +51,7 @@ public class MagistradoServiceImpl implements MagistradoService {
 
     @Override
     public Response<?> create(MagistradoDTO dto) {
-        Magistrado founded = magistradoRepository.findByNomeIgnoreCase(dto.getNomeCompleto());
+        Magistrado founded = magistradoRepository.findByNomeCompletoIgnoreCase(dto.getNomeCompleto());
         if (founded != null) {
             throw new RuntimeException("Magistrado já existe");
         }
@@ -100,7 +100,7 @@ public class MagistradoServiceImpl implements MagistradoService {
             for (MagistradoCSVRecord record : csvRecords) {
                 if (record != null) {
 
-                    Magistrado founded = magistradoRepository.findByNomeIgnoreCase(record.getNome());
+                    Magistrado founded = magistradoRepository.findByNomeCompletoIgnoreCase(record.getNome());
 
                     if (founded == null) {
                         Magistrado magistrado = new Magistrado();

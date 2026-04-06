@@ -20,13 +20,13 @@ public class AutoDepoimentoDirectoController {
     private final AutoDepoimentoDirectoService autoDepoimentoDirectoService;
 
     @GetMapping(AUTO_DEPOIMENTO_DIRECTO_PATH)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
     public ResponseEntity<Response<List<AutoDepoimentoDirectoDTO>>> getAllAutosDepoimentosDirectos() {
         return ResponseEntity.ok(autoDepoimentoDirectoService.getAll());
     }
 
     @GetMapping(AUTO_DEPOIMENTO_DIRECTO_PATH_ID)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
     public ResponseEntity<Response<?>> getAutoDepoimentoDirectoById(@PathVariable("autoDepoimentoDirectoId") Long autoDepoimentoDirectoId) {
         return ResponseEntity.ok(autoDepoimentoDirectoService.getById(autoDepoimentoDirectoId));
     }

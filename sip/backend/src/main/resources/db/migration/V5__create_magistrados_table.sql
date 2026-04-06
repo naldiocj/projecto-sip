@@ -1,6 +1,6 @@
 CREATE TABLE magistrados (
     id BIGSERIAL PRIMARY KEY,
-    nomeCompleto VARCHAR(255),
+    nome_completo VARCHAR(255),
     user_id BIGINT,
     is_deleted BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP,

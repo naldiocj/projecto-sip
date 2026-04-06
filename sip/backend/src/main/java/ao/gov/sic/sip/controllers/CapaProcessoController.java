@@ -20,13 +20,13 @@ public class CapaProcessoController {
     private final CapaProcessoService capaProcessoService;
 
     @GetMapping(CAPA_PROCESSO_PATH)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
     public ResponseEntity<Response<List<CapaProcessoDTO>>> getAllCapasProcessos() {
         return ResponseEntity.ok(capaProcessoService.getAll());
     }
 
     @GetMapping(CAPA_PROCESSO_PATH_ID)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
     public ResponseEntity<Response<?>> getCapaProcessoById(@PathVariable("capaProcessoId") Long capaProcessoId) {
         return ResponseEntity.ok(capaProcessoService.getById(capaProcessoId));
     }

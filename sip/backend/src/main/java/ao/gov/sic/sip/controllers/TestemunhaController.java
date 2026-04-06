@@ -1,7 +1,7 @@
 package ao.gov.sic.sip.controllers;
 
-import ao.gov.sic.sip.dtos.TestemunhaDTO;
 import ao.gov.sic.sip.dtos.Response;
+import ao.gov.sic.sip.dtos.TestemunhaDTO;
 import ao.gov.sic.sip.services.TestemunhaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,13 +20,13 @@ public class TestemunhaController {
     private final TestemunhaService testemunhaService;
 
     @GetMapping(TESTEMUNHA_PATH)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
     public ResponseEntity<Response<List<TestemunhaDTO>>> getAllTestemunhas() {
         return ResponseEntity.ok(testemunhaService.getAll());
     }
 
     @GetMapping(TESTEMUNHA_PATH_ID)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
     public ResponseEntity<Response<?>> getTestemunhaById(@PathVariable("testemunhaId") Long testemunhaId) {
         return ResponseEntity.ok(testemunhaService.getById(testemunhaId));
     }

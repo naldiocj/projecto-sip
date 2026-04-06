@@ -29,6 +29,7 @@ public class Municipio {
     @JoinColumn(name = "provincia_id")
     private Provincia provincia;
 
+    @Builder.Default
     private boolean isDeleted = Boolean.FALSE;
 
     @Column(updatable = false)

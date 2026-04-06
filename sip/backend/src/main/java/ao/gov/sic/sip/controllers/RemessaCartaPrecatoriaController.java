@@ -20,13 +20,13 @@ public class RemessaCartaPrecatoriaController {
     private final RemessaCartaPrecatoriaService remessaCartaPrecatoriaService;
 
     @GetMapping(REMESSA_CARTA_PRECATORIA_PATH)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
     public ResponseEntity<Response<List<RemessaCartaPrecatoriaDTO>>> getAllRemessasCartasPrecatorias() {
         return ResponseEntity.ok(remessaCartaPrecatoriaService.getAll());
     }
 
     @GetMapping(REMESSA_CARTA_PRECATORIA_PATH_ID)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
     public ResponseEntity<Response<?>> getRemessaCartaPrecatoriaById(@PathVariable("remessaCartaPrecatoriaId") Long remessaCartaPrecatoriaId) {
         return ResponseEntity.ok(remessaCartaPrecatoriaService.getById(remessaCartaPrecatoriaId));
     }

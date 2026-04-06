@@ -30,6 +30,7 @@ public class Patente {
     @JoinColumn(name = "categoria_id")
     Categoria categoria;
 
+    @Builder.Default
     private boolean isDeleted = Boolean.FALSE;
 
     @Column(updatable = false)

@@ -1,11 +1,13 @@
 package ao.gov.sic.sip.services.impl;
 
 import ao.gov.sic.sip.dtos.AutoAcariacaoDTO;
+import ao.gov.sic.sip.records.FileRecord;
 import ao.gov.sic.sip.dtos.Response;
 import ao.gov.sic.sip.entities.AutoAcariacao;
 import ao.gov.sic.sip.entities.Endereco;
 import ao.gov.sic.sip.entities.Processo;
 import ao.gov.sic.sip.entities.User;
+import ao.gov.sic.sip.exceptions.BadRequestException;
 import ao.gov.sic.sip.exceptions.NotFoundException;
 import ao.gov.sic.sip.mappers.AutoAcariacaoMapper;
 import ao.gov.sic.sip.repositories.AutoAcariacaoRepository;
@@ -13,11 +15,13 @@ import ao.gov.sic.sip.repositories.EnderecoRepository;
 import ao.gov.sic.sip.repositories.ProcessoRepository;
 import ao.gov.sic.sip.repositories.UserRepository;
 import ao.gov.sic.sip.services.AutoAcariacaoService;
+import ao.gov.sic.sip.services.StorageFileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -30,6 +34,7 @@ public class AutoAcariacaoServiceImpl implements AutoAcariacaoService {
     private final EnderecoRepository enderecoRepository;
     private final ProcessoRepository processoRepository;
     private final UserRepository userRepository;
+    private final StorageFileService storageFileService;
 
     @Override
     public Response<AutoAcariacaoDTO> getById(Long id) {
@@ -53,12 +58,16 @@ public class AutoAcariacaoServiceImpl implements AutoAcariacaoService {
             Endereco endereco = enderecoRepository.findById(dto.getEnderecoId())
                     .orElseThrow(() -> new NotFoundException("Endereço não encontrado"));
             autoAcariacao.setEndereco(endereco);
+        } else {
+            autoAcariacao.setEndereco(null);
         }
 
         if (dto.getProcessoId() != null) {
             Processo processo = processoRepository.findById(dto.getProcessoId())
                     .orElseThrow(() -> new NotFoundException("Processo não encontrado"));
             autoAcariacao.setProcesso(processo);
+        } else {
+            throw new NotFoundException("Processo não encontrado");
         }
 
         if (dto.getUserId() != null) {
@@ -85,6 +94,25 @@ public class AutoAcariacaoServiceImpl implements AutoAcariacaoService {
         return Response.builder()
                 .statusCode(HttpStatus.OK.value())
                 .message("Auto de acariação eliminado com sucesso")
+                .build();
+    }
+
+    @Override
+    public Response<?> uploadArquivo(Long id, MultipartFile file) {
+        AutoAcariacao autoAcariacao = autoAcariacaoRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Auto de acariação não encontrado"));
+
+        try {
+            FileRecord fileRecord = storageFileService.save(file);
+            autoAcariacao.setArquivo(fileRecord.getFileName());
+            autoAcariacaoRepository.save(autoAcariacao);
+        } catch (Exception e) {
+            throw new BadRequestException("Erro ao carregar o ficheiro");
+        }
+
+        return Response.builder()
+                .statusCode(HttpStatus.OK.value())
+                .message("Ficheiro carregado com sucesso")
                 .build();
     }
 

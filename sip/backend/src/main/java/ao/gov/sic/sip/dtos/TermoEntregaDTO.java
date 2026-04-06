@@ -1,5 +1,6 @@
 package ao.gov.sic.sip.dtos;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,5 +22,6 @@ public class TermoEntregaDTO {
     private String artigoApreendido;
     private LocalDate dataEntrega;
     private Long processoId;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long userId;
 }

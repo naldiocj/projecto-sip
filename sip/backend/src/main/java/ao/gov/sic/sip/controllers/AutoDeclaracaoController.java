@@ -20,13 +20,13 @@ public class AutoDeclaracaoController {
     private final AutoDeclaracaoService autoDeclaracaoService;
 
     @GetMapping(AUTO_DECLARACAO_PATH)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
     public ResponseEntity<Response<List<AutoDeclaracaoDTO>>> getAllAutosDeclaracoes() {
         return ResponseEntity.ok(autoDeclaracaoService.getAll());
     }
 
     @GetMapping(AUTO_DECLARACAO_PATH_ID)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
     public ResponseEntity<Response<?>> getAutoDeclaracaoById(@PathVariable("autoDeclaracaoId") Long autoDeclaracaoId) {
         return ResponseEntity.ok(autoDeclaracaoService.getById(autoDeclaracaoId));
     }

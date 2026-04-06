@@ -20,13 +20,13 @@ public class AvisoNotificacaoController {
     private final AvisoNotificacaoService avisoNotificacaoService;
 
     @GetMapping(AVISO_NOTIFICACAO_PATH)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
     public ResponseEntity<Response<List<AvisoNotificacaoDTO>>> getAllAvisosNotificacoes() {
         return ResponseEntity.ok(avisoNotificacaoService.getAll());
     }
 
     @GetMapping(AVISO_NOTIFICACAO_PATH_ID)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
     public ResponseEntity<Response<?>> getAvisoNotificacaoById(@PathVariable("avisoNotificacaoId") Long avisoNotificacaoId) {
         return ResponseEntity.ok(avisoNotificacaoService.getById(avisoNotificacaoId));
     }

@@ -16,17 +16,24 @@ import java.util.List;
 public class MunicipioController {
     private final static String MUNICIPIO_PATH = "/api/v1/municipios";
     private final static String MUNICIPIO_PATH_ID = MUNICIPIO_PATH + "/{municipioId}";
+    private final static String MUNICIPIO_PATH_PROVINCIA_ID = MUNICIPIO_PATH + "/provincia/{provinciaId}";
 
     private final MunicipioService municipioService;
 
     @GetMapping(MUNICIPIO_PATH)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
     public ResponseEntity<Response<List<MunicipioDTO>>> getAllMunicipios() {
         return ResponseEntity.ok(municipioService.getAll());
     }
 
+    @GetMapping(MUNICIPIO_PATH_PROVINCIA_ID)
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
+    public ResponseEntity<Response<List<MunicipioDTO>>> getAllMunicipiosByProvinciaId(@PathVariable("provinciaId") Long provinciaId) {
+        return ResponseEntity.ok(municipioService.getAllByProvinciaId(provinciaId));
+    }
+
     @GetMapping(MUNICIPIO_PATH_ID)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
     public ResponseEntity<Response<?>> getMunicipioById(@PathVariable("municipioId") Long municipioId) {
         return ResponseEntity.ok(municipioService.getById(municipioId));
     }

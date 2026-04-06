@@ -22,13 +22,13 @@ public class MagistradoController {
     private final MagistradoService magistradoService;
 
     @GetMapping(MAGISTRADO_PATH)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
     public ResponseEntity<Response<List<MagistradoDTO>>> getAllMagistrados() {
         return ResponseEntity.ok(magistradoService.getAll());
     }
 
     @GetMapping(MAGISTRADO_PATH_ID)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
     public ResponseEntity<Response<?>> getMagistradoById(@PathVariable("magistradoId") Long magistradoId) {
         return ResponseEntity.ok(magistradoService.getById(magistradoId));
     }

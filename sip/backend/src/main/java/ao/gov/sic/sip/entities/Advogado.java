@@ -29,6 +29,8 @@ public class Advogado {
     @Column(unique = true)
     private String numeroCedula;
 
+    private String telefone;
+
     @Enumerated(EnumType.STRING)
     private TipoAdvogado tipoAdvogado;
 
@@ -40,6 +42,7 @@ public class Advogado {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Builder.Default
     private boolean isDeleted = Boolean.FALSE;
 
     @Column(updatable = false)

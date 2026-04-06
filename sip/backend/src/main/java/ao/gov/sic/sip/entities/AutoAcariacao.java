@@ -46,10 +46,13 @@ public class AutoAcariacao {
     @Column(columnDefinition = "TEXT")
     private String materiaAutos;
 
+    private String arquivo;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Builder.Default
     private boolean isDeleted = Boolean.FALSE;
 
     @Column(updatable = false)

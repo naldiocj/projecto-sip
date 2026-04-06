@@ -1,5 +1,6 @@
 package ao.gov.sic.sip.entities;
 
+import ao.gov.sic.sip.enums.EstadoProcesso;
 import ao.gov.sic.sip.enums.TipoProcesso;
 import jakarta.persistence.*;
 import lombok.*;
@@ -9,7 +10,9 @@ import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -41,19 +44,37 @@ public class Processo {
 
     @ManyToMany
     @JoinTable(
-            name = "processo_crimes",
+            name = "processos_crimes",
             joinColumns = @JoinColumn(name = "processo_id"),
             inverseJoinColumns = @JoinColumn(name = "crime_id")
     )
+    @Builder.Default
     private Set<TipoCrime> crimes = new HashSet<>();
 
     @ManyToMany
     @JoinTable(
-            name = "processo_arguidos",
+            name = "processos_arguidos",
             joinColumns = @JoinColumn(name = "processo_id"),
             inverseJoinColumns = @JoinColumn(name = "arguido_id")
     )
+    @Builder.Default
     private Set<Arguido> arguidos = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "processos_diligencias",
+            joinColumns = @JoinColumn(name = "processo_id"),
+            inverseJoinColumns = @JoinColumn(name = "diligencia_id")
+    )
+    private Set<Diligencia> diligencias;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "processos_advogados",
+            joinColumns = @JoinColumn(name = "processo_id"),
+            inverseJoinColumns = @JoinColumn(name = "advogado_id")
+    )
+    private Set<ProcessoAdvogado> advogados;
 
     @ManyToOne
     @JoinColumn(name = "queixoso_id")
@@ -68,10 +89,6 @@ public class Processo {
     private Instrutor instrutor;
 
     @ManyToOne
-    @JoinColumn(name = "advogado_id")
-    private Advogado advogado;
-
-    @ManyToOne
     @JoinColumn(name = "director_id")
     private Director director;
 
@@ -79,6 +96,10 @@ public class Processo {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Enumerated(EnumType.STRING)
+    private EstadoProcesso estadoProcesso;
+
+    @Builder.Default
     private boolean isDeleted = Boolean.FALSE;
 
     @Column(updatable = false)
@@ -87,4 +108,5 @@ public class Processo {
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
 }

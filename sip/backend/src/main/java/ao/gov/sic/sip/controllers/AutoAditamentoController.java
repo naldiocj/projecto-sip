@@ -20,13 +20,13 @@ public class AutoAditamentoController {
     private final AutoAditamentoService autoAditamentoService;
 
     @GetMapping(AUTO_ADITAMENTO_PATH)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
     public ResponseEntity<Response<List<AutoAditamentoDTO>>> getAllAutosAditamentos() {
         return ResponseEntity.ok(autoAditamentoService.getAll());
     }
 
     @GetMapping(AUTO_ADITAMENTO_PATH_ID)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
     public ResponseEntity<Response<?>> getAutoAditamentoById(@PathVariable("autoAditamentoId") Long autoAditamentoId) {
         return ResponseEntity.ok(autoAditamentoService.getById(autoAditamentoId));
     }

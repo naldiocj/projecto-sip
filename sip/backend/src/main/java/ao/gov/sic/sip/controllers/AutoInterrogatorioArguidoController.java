@@ -20,13 +20,13 @@ public class AutoInterrogatorioArguidoController {
     private final AutoInterrogatorioArguidoService autoInterrogatorioArguidoService;
 
     @GetMapping(AUTO_INTERROGATORIO_ARGUIDO_PATH)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
     public ResponseEntity<Response<List<AutoInterrogatorioArguidoDTO>>> getAllAutosInterrogatoriosArguidos() {
         return ResponseEntity.ok(autoInterrogatorioArguidoService.getAll());
     }
 
     @GetMapping(AUTO_INTERROGATORIO_ARGUIDO_PATH_ID)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
     public ResponseEntity<Response<?>> getAutoInterrogatorioArguidoById(@PathVariable("autoInterrogatorioArguidoId") Long autoInterrogatorioArguidoId) {
         return ResponseEntity.ok(autoInterrogatorioArguidoService.getById(autoInterrogatorioArguidoId));
     }

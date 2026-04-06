@@ -10,4 +10,6 @@ public interface StorageFileService {
     String generateUniqueName(MultipartFile file);
 
     Boolean remove(String fileName);
+
+    FileRecord saveToFolder(MultipartFile file, String dirName);
 }

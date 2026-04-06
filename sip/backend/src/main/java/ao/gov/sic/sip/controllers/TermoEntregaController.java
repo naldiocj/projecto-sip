@@ -1,7 +1,7 @@
 package ao.gov.sic.sip.controllers;
 
-import ao.gov.sic.sip.dtos.TermoEntregaDTO;
 import ao.gov.sic.sip.dtos.Response;
+import ao.gov.sic.sip.dtos.TermoEntregaDTO;
 import ao.gov.sic.sip.services.TermoEntregaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,13 +20,13 @@ public class TermoEntregaController {
     private final TermoEntregaService termoEntregaService;
 
     @GetMapping(TERMO_ENTREGA_PATH)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
     public ResponseEntity<Response<List<TermoEntregaDTO>>> getAllTermosEntregas() {
         return ResponseEntity.ok(termoEntregaService.getAll());
     }
 
     @GetMapping(TERMO_ENTREGA_PATH_ID)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
     public ResponseEntity<Response<?>> getTermoEntregaById(@PathVariable("termoEntregaId") Long termoEntregaId) {
         return ResponseEntity.ok(termoEntregaService.getById(termoEntregaId));
     }

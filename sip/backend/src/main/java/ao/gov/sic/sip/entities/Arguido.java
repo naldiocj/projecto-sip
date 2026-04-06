@@ -49,6 +49,7 @@ public class Arguido {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Builder.Default
     private boolean isDeleted = Boolean.FALSE;
 
     @Column(updatable = false)

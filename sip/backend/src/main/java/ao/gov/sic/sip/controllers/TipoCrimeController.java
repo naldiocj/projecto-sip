@@ -22,13 +22,13 @@ public class TipoCrimeController {
     private final TipoCrimeService tipoCrimeService;
 
     @GetMapping(TIPO_CRIME_PATH)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
     public ResponseEntity<Response<List<TipoCrimeDTO>>> getAllTiposCrimes() {
         return ResponseEntity.ok(tipoCrimeService.getAll());
     }
 
     @GetMapping(TIPO_CRIME_PATH_ID)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
     public ResponseEntity<Response<?>> getTipoCrimeById(@PathVariable("tipoCrimeId") Long tipoCrimeId) {
         return ResponseEntity.ok(tipoCrimeService.getById(tipoCrimeId));
     }

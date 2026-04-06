@@ -1,6 +1,6 @@
 CREATE TABLE queixosos (
     id BIGSERIAL PRIMARY KEY,
-    nomeCompleto VARCHAR(255),
+    nome_completo VARCHAR(255),
     nome_pai VARCHAR(255),
     nome_mae VARCHAR(255),
     estado_civil VARCHAR(255),

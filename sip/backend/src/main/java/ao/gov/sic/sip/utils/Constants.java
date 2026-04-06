@@ -12,4 +12,8 @@ public final class Constants {
     public static final String INSTRUTOR = "INSTRUTOR";
     public static final String PIQUETE = "PIQUETE";
     public static final String PGR = "PGR";
+
+    public static final String SECRETARIA = "SECRETARIA";
+
+
 }

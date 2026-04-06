@@ -3,6 +3,7 @@ package ao.gov.sic.sip.controllers;
 import ao.gov.sic.sip.dtos.QueixosoDTO;
 import ao.gov.sic.sip.dtos.Response;
 import ao.gov.sic.sip.services.QueixosoService;
+import ao.gov.sic.sip.utils.ProcessoUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,31 +21,32 @@ public class QueixosoController {
     private final QueixosoService queixosoService;
 
     @GetMapping(QUEIXOSO_PATH)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
     public ResponseEntity<Response<List<QueixosoDTO>>> getAllQueixosos() {
         return ResponseEntity.ok(queixosoService.getAll());
     }
 
     @GetMapping(QUEIXOSO_PATH_ID)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
     public ResponseEntity<Response<?>> getQueixosoById(@PathVariable("queixosoId") Long queixosoId) {
         return ResponseEntity.ok(queixosoService.getById(queixosoId));
     }
 
     @PostMapping(QUEIXOSO_PATH)
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'INSTRUTOR')")
     public ResponseEntity<?> createQueixoso(@Validated @RequestBody QueixosoDTO dto) {
+        dto.setProcessoNumero(ProcessoUtils.cvtToProcessoNumero(dto.getProcessoNumero()));
         return ResponseEntity.ok(queixosoService.create(dto));
     }
 
     @PostMapping(QUEIXOSO_PATH_ID)
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'INSTRUTOR')")
     public ResponseEntity<?> updateQueixosoById(@RequestBody QueixosoDTO dto, @PathVariable("queixosoId") Long queixosoId) {
         return ResponseEntity.ok(queixosoService.updateById(dto, queixosoId));
     }
 
     @DeleteMapping(QUEIXOSO_PATH_ID)
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'INSTRUTOR')")
     public ResponseEntity<?> deleteQueixosoById(@PathVariable("queixosoId") Long queixosoId) {
         return ResponseEntity.ok(queixosoService.deleteById(queixosoId));
     }

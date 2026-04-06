@@ -1,6 +1,5 @@
 package ao.gov.sic.sip.entities;
 
-import ao.gov.sic.sip.enums.TipoDeclaracao;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -47,6 +46,7 @@ public class AutoAditamento {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Builder.Default
     private boolean isDeleted = Boolean.FALSE;
 
     @Column(updatable = false)

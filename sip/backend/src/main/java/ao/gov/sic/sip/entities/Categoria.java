@@ -26,6 +26,7 @@ public class Categoria {
     @Column(unique = true)
     private String nome;
 
+    @Builder.Default
     private boolean isDeleted = Boolean.FALSE;
 
     @Column(updatable = false)

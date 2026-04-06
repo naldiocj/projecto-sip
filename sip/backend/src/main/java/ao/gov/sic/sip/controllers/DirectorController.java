@@ -20,13 +20,13 @@ public class DirectorController {
     private final DirectorService directorService;
 
     @GetMapping(DIRECTOR_PATH)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
     public ResponseEntity<Response<List<DirectorDTO>>> getAllDirectores() {
         return ResponseEntity.ok(directorService.getAll());
     }
 
     @GetMapping(DIRECTOR_PATH_ID)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
     public ResponseEntity<Response<?>> getDirectorById(@PathVariable("directorId") Long directorId) {
         return ResponseEntity.ok(directorService.getById(directorId));
     }

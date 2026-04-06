@@ -1,0 +1,1 @@
+ALTER TABLE advogados ADD COLUMN telefone VARCHAR(255);

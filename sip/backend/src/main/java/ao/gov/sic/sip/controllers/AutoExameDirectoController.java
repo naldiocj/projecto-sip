@@ -20,13 +20,13 @@ public class AutoExameDirectoController {
     private final AutoExameDirectoService autoExameDirectoService;
 
     @GetMapping(AUTO_EXAME_DIRECTO_PATH)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
     public ResponseEntity<Response<List<AutoExameDirectoDTO>>> getAllAutosExamesDirectos() {
         return ResponseEntity.ok(autoExameDirectoService.getAll());
     }
 
     @GetMapping(AUTO_EXAME_DIRECTO_PATH_ID)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
     public ResponseEntity<Response<?>> getAutoExameDirectoById(@PathVariable("autoExameDirectoId") Long autoExameDirectoId) {
         return ResponseEntity.ok(autoExameDirectoService.getById(autoExameDirectoId));
     }

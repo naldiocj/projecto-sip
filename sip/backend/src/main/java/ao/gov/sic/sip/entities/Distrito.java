@@ -29,6 +29,7 @@ public class Distrito {
     @JoinColumn(name = "municipio_id")
     private Municipio municipio;
 
+    @Builder.Default
     private boolean isDeleted = Boolean.FALSE;
 
     @Column(updatable = false)

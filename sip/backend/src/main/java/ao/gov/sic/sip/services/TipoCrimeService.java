@@ -1,5 +1,6 @@
 package ao.gov.sic.sip.services;
 
+import ao.gov.sic.sip.dtos.Item;
 import ao.gov.sic.sip.dtos.Response;
 import ao.gov.sic.sip.dtos.TipoCrimeDTO;
 import org.springframework.web.multipart.MultipartFile;

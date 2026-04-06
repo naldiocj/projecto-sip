@@ -1,12 +1,16 @@
 package ao.gov.sic.sip.services;
 
 import ao.gov.sic.sip.dtos.ProcessoDTO;
+import ao.gov.sic.sip.dtos.ProcessoDetailDTO;
+import ao.gov.sic.sip.dtos.ProcessoResDTO;
 import ao.gov.sic.sip.dtos.Response;
 
 import java.util.List;
 
 public interface ProcessoService {
-    Response<ProcessoDTO> getById(Long id);
+    Response<ProcessoDetailDTO> getById(Long id);
+
+    Response<ProcessoDetailDTO> getByNumero(String numero);
 
     Response<?> updateById(ProcessoDTO dto, Long id);
 
@@ -14,5 +18,5 @@ public interface ProcessoService {
 
     Response<?> deleteById(Long id);
 
-    Response<List<ProcessoDTO>> getAll();
+    Response<List<ProcessoResDTO>> getAll(String term);
 }

@@ -15,4 +15,6 @@ public interface MunicipioService {
     Response<?> deleteById(Long id);
 
     Response<List<MunicipioDTO>> getAll();
+
+    Response<List<MunicipioDTO>> getAllByProvinciaId(Long id);
 }

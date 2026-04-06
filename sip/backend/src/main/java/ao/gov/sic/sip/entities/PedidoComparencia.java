@@ -21,48 +21,49 @@ import java.time.LocalDateTime;
 @SQLDelete(sql = "UPDATE pedidos_comparencias SET is_deleted = true WHERE id=?")
 @SQLRestriction("is_deleted=false")
 public class PedidoComparencia {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Long id;
 
-    private Integer numeroFolha;
+        private Integer numeroFolha;
 
-    private LocalDate dataComparencia;
+        private LocalDate dataComparencia;
 
-    @Enumerated(EnumType.STRING)
-    private NaQualidade naQualidadeDe;
+        @Enumerated(EnumType.STRING)
+        private NaQualidade naQualidadeDe;
 
-    private String assunto;
+        private String assunto;
 
-    @ManyToOne
-    @JoinColumn(name = "endereco_id")
-    private Endereco endereco;
+        @ManyToOne
+        @JoinColumn(name = "endereco_id")
+        private Endereco endereco;
 
-    @ManyToOne
-    @JoinColumn(name = "arguido_id")
-    private Arguido arguido;
+        @ManyToOne
+        @JoinColumn(name = "arguido_id")
+        private Arguido arguido;
 
-    @ManyToOne
-    @JoinColumn(name = "testemunha_id")
-    private Testemunha testemunha;
+        @ManyToOne
+        @JoinColumn(name = "testemunha_id")
+        private Testemunha testemunha;
 
-    @ManyToOne
-    @JoinColumn(name = "processo_id")
-    private Processo processo;
+        @ManyToOne
+        @JoinColumn(name = "processo_id")
+        private Processo processo;
 
-    @Column(columnDefinition = "TEXT")
-    private String materiaAutos;
+        @Column(columnDefinition = "TEXT")
+        private String materiaAutos;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+        @ManyToOne
+        @JoinColumn(name = "user_id")
+        private User user;
 
-    private boolean isDeleted = Boolean.FALSE;
+        @Builder.Default
+        private boolean isDeleted = Boolean.FALSE;
 
-    @Column(updatable = false)
-    @CreationTimestamp
-    private LocalDateTime createdAt;
+        @Column(updatable = false)
+        @CreationTimestamp
+        private LocalDateTime createdAt;
 
-    @UpdateTimestamp
-    private LocalDateTime updatedAt;
+        @UpdateTimestamp
+        private LocalDateTime updatedAt;
 }

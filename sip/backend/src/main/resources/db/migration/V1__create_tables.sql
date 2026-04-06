@@ -69,7 +69,7 @@ CREATE TABLE patentes (
 
 CREATE TABLE directores (
     id BIGSERIAL PRIMARY KEY,
-    nomeCompleto VARCHAR(255),
+    nome_completo VARCHAR(255),
     patente_id BIGINT,
     cargo_id BIGINT,
     direcao_id BIGINT,
