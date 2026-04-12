@@ -4,22 +4,17 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.time.LocalDateTime;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProcessoDocumentoDTO {
+public class ProcessoDocumentoItemDTO {
     private Long id;
 
     private String titulo;
     private String tipo;
     private String descricao;
-    private MultipartFile arquivo;
+    private String url;
     private String processoNumero;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 }

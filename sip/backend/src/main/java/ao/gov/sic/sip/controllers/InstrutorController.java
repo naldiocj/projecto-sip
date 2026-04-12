@@ -1,6 +1,7 @@
 package ao.gov.sic.sip.controllers;
 
 import ao.gov.sic.sip.dtos.InstrutorDTO;
+import ao.gov.sic.sip.dtos.InstrutorDetailDTO;
 import ao.gov.sic.sip.dtos.Response;
 import ao.gov.sic.sip.services.InstrutorService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ public class InstrutorController {
     private final static String INSTRUTOR_PATH = "/api/v1/instrutores";
     private final static String INSTRUTOR_PATH_ID = INSTRUTOR_PATH + "/{instrutorId}";
     private final static String INSTRUTOR_PATH_BULK = INSTRUTOR_PATH + "/bulk";
+    private final static String INSTRUTOR_PATH_BY_DIRECAO = INSTRUTOR_PATH + "/direcoes/{direcaoId}";
 
     private final InstrutorService instrutorService;
 
@@ -25,6 +27,12 @@ public class InstrutorController {
     @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
     public ResponseEntity<Response<List<InstrutorDTO>>> getAllInstrutores() {
         return ResponseEntity.ok(instrutorService.getAll());
+    }
+
+    @GetMapping(INSTRUTOR_PATH_BY_DIRECAO)
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
+    public ResponseEntity<Response<List<InstrutorDetailDTO>>> getAllInstrutoresByDireccao(@PathVariable("direcaoId") Long direcaoId) {
+        return ResponseEntity.ok(instrutorService.getAllPerDireccao(direcaoId));
     }
 
     @GetMapping(INSTRUTOR_PATH_ID)
@@ -56,4 +64,6 @@ public class InstrutorController {
     public ResponseEntity<?> bulkInstrutores(@RequestParam("csvFile") MultipartFile csvFile) {
         return ResponseEntity.ok(instrutorService.bulkInstrutoresByCsv(csvFile));
     }
+
+
 }

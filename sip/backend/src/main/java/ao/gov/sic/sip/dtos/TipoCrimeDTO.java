@@ -23,4 +23,6 @@ public class TipoCrimeDTO {
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long userId;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }

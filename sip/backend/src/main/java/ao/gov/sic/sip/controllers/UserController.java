@@ -38,7 +38,7 @@ public class UserController {
     }
 
     @GetMapping(USER_PATH_ME)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'SECRETARIA', 'INSTRUTOR', 'PIQUETE', 'PGR')")
     public ResponseEntity<Response<UserDTO>> getAccountDetails() {
         return ResponseEntity.ok(userService.getAccountDetails());
     }

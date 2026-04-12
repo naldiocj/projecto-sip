@@ -1,10 +1,10 @@
 package ao.gov.sic.sip.dtos;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 
@@ -12,14 +12,12 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProcessoDocumentoDTO {
+public class InstrutorDetailDTO {
     private Long id;
-
-    private String titulo;
-    private String tipo;
-    private String descricao;
-    private MultipartFile arquivo;
-    private String processoNumero;
+    private String nomeCompleto;
+    private String patente;
+    private String cargo;
+    private String direcao;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

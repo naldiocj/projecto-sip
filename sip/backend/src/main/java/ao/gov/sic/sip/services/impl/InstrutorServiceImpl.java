@@ -1,6 +1,7 @@
 package ao.gov.sic.sip.services.impl;
 
 import ao.gov.sic.sip.dtos.InstrutorDTO;
+import ao.gov.sic.sip.dtos.InstrutorDetailDTO;
 import ao.gov.sic.sip.dtos.Response;
 import ao.gov.sic.sip.entities.*;
 import ao.gov.sic.sip.exceptions.NotFoundException;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -187,6 +189,27 @@ public class InstrutorServiceImpl implements InstrutorService {
                 .toList();
 
         return Response.<List<InstrutorDTO>>builder()
+                .statusCode(HttpStatus.OK.value())
+                .message(instrutores.isEmpty() ? "Nenhum instrutor encontrado" : "Instrutores encontrados com sucesso")
+                .data(instrutores)
+                .build();
+    }
+
+    @Override
+    public Response<List<InstrutorDetailDTO>> getAllPerDireccao(Long direccaoId) {
+        List<InstrutorDetailDTO> instrutores = instrutorRepository.findAll()
+                .stream()
+                .filter(instrutor -> instrutor.getDirecao().getId().equals(direccaoId))
+                .map(instrutor -> InstrutorDetailDTO.builder()
+                        .createdAt(LocalDateTime.now())
+                        .nomeCompleto(instrutor.getNomeCompleto())
+                        .direcao(instrutor.getDirecao().getNome())
+                        .patente(instrutor.getPatente().getNome())
+                        .cargo(instrutor.getCargo().getNome())
+                        .build())
+                .toList();
+
+        return Response.<List<InstrutorDetailDTO>>builder()
                 .statusCode(HttpStatus.OK.value())
                 .message(instrutores.isEmpty() ? "Nenhum instrutor encontrado" : "Instrutores encontrados com sucesso")
                 .data(instrutores)
