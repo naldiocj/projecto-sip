@@ -9,28 +9,27 @@ import ao.gov.sic.sip.services.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 public class AuthController {
 
-    private static final String AUTH_PATH = "/api/v1/auth";
-    private static final String AUTH_REGISTER = AUTH_PATH + "/register";
-    private static final String AUTH_LOGIN = AUTH_PATH + "/login";
-
     private final AuthService authService;
 
-    @PostMapping(AUTH_REGISTER)
+    @PostMapping("/register")
     public ResponseEntity<Response<?>> register(@Valid @RequestBody RegistrationRequest registrationRequest) {
-        return ResponseEntity.ok(authService.register(registrationRequest));
+        Response<?> response = authService.register(registrationRequest);
+        return ResponseEntity.status(response.getStatusCode()).body(response);
     }
 
-    @PostMapping(AUTH_LOGIN)
+    @PostMapping("/login")
     public ResponseEntity<Response<LoginResponse>> login(@Valid @RequestBody LoginRequest loginRequest) {
-        return ResponseEntity.ok(authService.login(loginRequest));
+        Response<LoginResponse> response = authService.login(loginRequest);
+        return ResponseEntity.status(response.getStatusCode()).body(response);
     }
-
 }

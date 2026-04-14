@@ -22,25 +22,25 @@ public class TipoCrimeController {
     private final TipoCrimeService tipoCrimeService;
 
     @GetMapping(TIPO_CRIME_PATH)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PGR', 'SECRETARIA', 'SECRETARIA_GERAL')")
     public ResponseEntity<Response<List<TipoCrimeDTO>>> getAllTiposCrimes() {
         return ResponseEntity.ok(tipoCrimeService.getAll());
     }
 
     @GetMapping(TIPO_CRIME_PATH_ID)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'PGR', 'SECRETARIA_GERAL')")
     public ResponseEntity<Response<?>> getTipoCrimeById(@PathVariable("tipoCrimeId") Long tipoCrimeId) {
         return ResponseEntity.ok(tipoCrimeService.getById(tipoCrimeId));
     }
 
     @PostMapping(TIPO_CRIME_PATH)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'INSTRUTOR', 'PIQUETE')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'PGR', 'SECRETARIA_GERAL')")
     public ResponseEntity<?> createTipoCrime(@Validated @RequestBody TipoCrimeDTO dto) {
         return ResponseEntity.ok(tipoCrimeService.create(dto));
     }
 
     @PostMapping(TIPO_CRIME_PATH_ID)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'INSTRUTOR', 'PIQUETE')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'PGR', 'SECRETARIA_GERAL')")
     public ResponseEntity<?> updateTipoCrimeById(@RequestBody TipoCrimeDTO dto, @PathVariable("tipoCrimeId") Long tipoCrimeId) {
         return ResponseEntity.ok(tipoCrimeService.updateById(dto, tipoCrimeId));
     }
@@ -52,7 +52,7 @@ public class TipoCrimeController {
     }
 
     @PostMapping(TIPO_CRIME_PATH_BULK)
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'PGR', 'SECRETARIA_GERAL')")
     public ResponseEntity<?> bulkTipoCrimes(@RequestParam("csvFile") MultipartFile csvFile) {
         return ResponseEntity.ok(tipoCrimeService.bulkTipoCrimesByCsv(csvFile));
     }

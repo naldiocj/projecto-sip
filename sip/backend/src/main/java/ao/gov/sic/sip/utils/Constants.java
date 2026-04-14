@@ -14,6 +14,7 @@ public final class Constants {
     public static final String PGR = "PGR";
 
     public static final String SECRETARIA = "SECRETARIA";
+    public static final String SECRETARIA_GERAL = "SECRETARIA_GERAL";
 
 
 }

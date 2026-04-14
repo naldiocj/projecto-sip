@@ -40,6 +40,7 @@ public class SecurityFilter {
                                         "/swagger-ui.html",
                                         "/actuator/**",
                                         "/media/**",
+                                        "/uploads/**",
                                         "/api/v1/auth/**")
                                 .permitAll()
                                 .anyRequest()

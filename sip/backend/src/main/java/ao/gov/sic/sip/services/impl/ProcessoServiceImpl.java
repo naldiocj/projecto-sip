@@ -12,13 +12,19 @@ import ao.gov.sic.sip.repositories.*;
 import ao.gov.sic.sip.services.ProcessoService;
 import ao.gov.sic.sip.services.UserService;
 import ao.gov.sic.sip.utils.ProcessoSpecifications;
+import ao.gov.sic.sip.utils.ValidarDocumento;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.flipkart.zjsonpatch.JsonPatch;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import tools.jackson.core.TreeNode;
+import tools.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -38,6 +44,7 @@ public class ProcessoServiceImpl implements ProcessoService {
     private final ArguidoRepository arguidoRepository;
     private final UserRepository userRepository;
     private final UserService userService;
+    private final ObjectMapper mapper;
 
     @Override
     public Response<ProcessoDetailDTO> getById(Long id) {
@@ -81,8 +88,11 @@ public class ProcessoServiceImpl implements ProcessoService {
     @Transactional
     @Override
     public Response<?> create(ProcessoDTO dto) {
-        String numeroConvertido = dto.getNumero().replaceFirst("-", "/");
-        dto.setNumero(numeroConvertido);
+        boolean isValid = ValidarDocumento.isValidNumeroProcesso(dto.getNumero());
+
+        if (!isValid) {
+            throw new RuntimeException("O número do processo é inválido");
+        }
 
         Processo founded = processoRepository.findFirstByNumero(dto.getNumero());
         if (founded != null) {
@@ -114,6 +124,9 @@ public class ProcessoServiceImpl implements ProcessoService {
         } else {
             processo.setInstrutor(null);
         }
+
+        // Add null to direcao
+        processo.setDirector(null);
 
         if (dto.getCrimesIds() != null && !dto.getCrimesIds().isEmpty()) {
             Set<TipoCrime> crimes = new HashSet<>(tipoCrimeRepository.findAllById(dto.getCrimesIds()));
@@ -242,7 +255,7 @@ public class ProcessoServiceImpl implements ProcessoService {
                     .stream()
                     .map(processoMapper::processoToProcessoResDTO)
                     .toList();
-        } else  {
+        } else {
             processos = processoRepository.findAll(spec)
                     .stream()
                     .filter(processo -> processo.getUser().getId().equals(user.getId()))
@@ -255,5 +268,20 @@ public class ProcessoServiceImpl implements ProcessoService {
                 .message(processos.isEmpty() ? "Nenhum processo encontrado" : "Sucesso")
                 .data(processos)
                 .build();
+    }
+
+    @Override
+    public void patchProcessoById(Long id, JsonNode patch) {
+
+        Processo processo = processoRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Processo não encontrado"));
+
+        JsonNode target = mapper.convertValue(processo, JsonNode.class);
+
+        JsonNode patched = JsonPatch.apply(patch, target);
+
+        Processo processoUpdated = mapper.treeToValue((TreeNode) patched, Processo.class);
+
+        processoRepository.save(processoUpdated);
     }
 }

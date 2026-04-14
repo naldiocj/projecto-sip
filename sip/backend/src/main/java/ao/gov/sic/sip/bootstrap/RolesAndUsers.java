@@ -81,6 +81,14 @@ public class RolesAndUsers {
             secretaria.setPhoneNumber("-");
             secretaria.setRoles(List.of(SECRETARIA));
             authController.register(secretaria);
+
+            RegistrationRequest secretariaGeral = new RegistrationRequest();
+            secretariaGeral.setName("SECRETARIA GERAL");
+            secretariaGeral.setEmail("secretaria.geral@sic.gov.ao");
+            secretariaGeral.setPassword("123456");
+            secretariaGeral.setPhoneNumber("-");
+            secretariaGeral.setRoles(List.of(SECRETARIA_GERAL));
+            authController.register(secretariaGeral);
         }
     }
 
@@ -93,7 +101,8 @@ public class RolesAndUsers {
                     INSTRUTOR,
                     PIQUETE,
                     PGR,
-                    SECRETARIA
+                    SECRETARIA,
+                    SECRETARIA_GERAL
             );
             for (String roleName : rolesNames) {
                 Role role = new Role();

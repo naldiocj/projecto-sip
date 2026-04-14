@@ -89,6 +89,10 @@ public class Processo {
     private Instrutor instrutor;
 
     @ManyToOne
+    @JoinColumn(name = "direcao_id")
+    private Direcao direcao;
+
+    @ManyToOne
     @JoinColumn(name = "director_id")
     private Director director;
 
