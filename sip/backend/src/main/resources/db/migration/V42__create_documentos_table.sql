@@ -1,0 +1,11 @@
+CREATE TABLE documentos (
+    id BIGSERIAL PRIMARY KEY,
+    numero_processo VARCHAR(255) NOT NULL,
+    tipo_modelo VARCHAR(255) NOT NULL,
+    user_id BIGINT NOT NULL,
+    is_deleted BOOLEAN DEFAULT FALSE,
+    conteudo JSONB,
+    created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_documentos_user FOREIGN KEY (user_id) REFERENCES users(id)
+);

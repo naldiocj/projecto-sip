@@ -1,7 +1,6 @@
 package ao.gov.sic.sip.services.impl;
 
 import ao.gov.sic.sip.dtos.AutoAcariacaoDTO;
-import ao.gov.sic.sip.records.FileRecord;
 import ao.gov.sic.sip.dtos.Response;
 import ao.gov.sic.sip.entities.AutoAcariacao;
 import ao.gov.sic.sip.entities.Endereco;
@@ -10,6 +9,7 @@ import ao.gov.sic.sip.entities.User;
 import ao.gov.sic.sip.exceptions.BadRequestException;
 import ao.gov.sic.sip.exceptions.NotFoundException;
 import ao.gov.sic.sip.mappers.AutoAcariacaoMapper;
+import ao.gov.sic.sip.records.FileRecord;
 import ao.gov.sic.sip.repositories.AutoAcariacaoRepository;
 import ao.gov.sic.sip.repositories.EnderecoRepository;
 import ao.gov.sic.sip.repositories.ProcessoRepository;

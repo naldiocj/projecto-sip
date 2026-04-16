@@ -2,7 +2,6 @@ package ao.gov.sic.sip.services;
 
 import ao.gov.sic.sip.dtos.ParticipacaoDTO;
 import ao.gov.sic.sip.dtos.Response;
-import org.jspecify.annotations.Nullable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;

@@ -1,7 +1,6 @@
 package ao.gov.sic.sip.bootstrap;
 
 import ao.gov.sic.sip.controllers.AuthController;
-import ao.gov.sic.sip.dtos.RegistrationRequest;
 import ao.gov.sic.sip.entities.Action;
 import ao.gov.sic.sip.entities.Resource;
 import ao.gov.sic.sip.entities.Role;
@@ -15,9 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static ao.gov.sic.sip.utils.Constants.*;
 

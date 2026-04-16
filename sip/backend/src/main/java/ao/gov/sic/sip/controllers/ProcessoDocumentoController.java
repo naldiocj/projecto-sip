@@ -2,13 +2,11 @@ package ao.gov.sic.sip.controllers;
 
 import ao.gov.sic.sip.dtos.ProcessoDocumentoDTO;
 import ao.gov.sic.sip.dtos.ProcessoDocumentoItemDTO;
-import ao.gov.sic.sip.dtos.ProcessoResDTO;
 import ao.gov.sic.sip.dtos.Response;
 import ao.gov.sic.sip.entities.Processo;
 import ao.gov.sic.sip.exceptions.NotFoundException;
 import ao.gov.sic.sip.repositories.ProcessoRepository;
 import ao.gov.sic.sip.services.ProcessoDocumentoService;
-import ao.gov.sic.sip.services.StorageFileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.MediaType;

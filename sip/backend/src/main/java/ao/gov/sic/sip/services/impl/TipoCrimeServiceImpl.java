@@ -1,6 +1,5 @@
 package ao.gov.sic.sip.services.impl;
 
-import ao.gov.sic.sip.dtos.Item;
 import ao.gov.sic.sip.dtos.Response;
 import ao.gov.sic.sip.dtos.TipoCrimeDTO;
 import ao.gov.sic.sip.entities.TipoCrime;

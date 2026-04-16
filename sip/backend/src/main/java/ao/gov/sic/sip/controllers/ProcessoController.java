@@ -3,11 +3,10 @@ package ao.gov.sic.sip.controllers;
 import ao.gov.sic.sip.dtos.ProcessoDTO;
 import ao.gov.sic.sip.dtos.ProcessoResDTO;
 import ao.gov.sic.sip.dtos.Response;
+import ao.gov.sic.sip.dtos.UpdateProcessoDTO;
 import ao.gov.sic.sip.services.ProcessoService;
-import com.fasterxml.jackson.databind.JsonNode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -63,8 +62,8 @@ public class ProcessoController {
 
     @PatchMapping("/{processoId}")
     @PreAuthorize("hasAnyAuthority('SECRETARIA', 'SECRETARIA_GERAL')")
-    public ResponseEntity<Response<?>> patchProcessoById(@PathVariable("processoId") Long processoId, @RequestBody JsonNode patch) {
-        processoService.patchProcessoById(processoId, patch);
+    public ResponseEntity<Response<?>> patchProcessoById(@PathVariable("processoId") Long processoId, @RequestBody UpdateProcessoDTO dto) {
+        processoService.patchProcessoById(processoId, dto);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

@@ -1,35 +1,27 @@
 package ao.gov.sic.sip.services.impl;
 
-import ao.gov.sic.sip.dtos.ProcessoDTO;
-import ao.gov.sic.sip.dtos.ProcessoDetailDTO;
-import ao.gov.sic.sip.dtos.ProcessoResDTO;
-import ao.gov.sic.sip.dtos.Response;
+import ao.gov.sic.sip.dtos.*;
 import ao.gov.sic.sip.entities.*;
 import ao.gov.sic.sip.enums.EstadoProcesso;
 import ao.gov.sic.sip.exceptions.NotFoundException;
 import ao.gov.sic.sip.mappers.ProcessoMapper;
 import ao.gov.sic.sip.repositories.*;
+import ao.gov.sic.sip.services.DirecaoService;
 import ao.gov.sic.sip.services.ProcessoService;
 import ao.gov.sic.sip.services.UserService;
 import ao.gov.sic.sip.utils.ProcessoSpecifications;
 import ao.gov.sic.sip.utils.ValidarDocumento;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.flipkart.zjsonpatch.JsonPatch;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import tools.jackson.core.TreeNode;
 import tools.jackson.databind.ObjectMapper;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -44,7 +36,11 @@ public class ProcessoServiceImpl implements ProcessoService {
     private final ArguidoRepository arguidoRepository;
     private final UserRepository userRepository;
     private final UserService userService;
+
+    @Qualifier("objectMapper")
     private final ObjectMapper mapper;
+    private final DirecaoService direcaoService;
+    private final DirecaoRepository direcaoRepository;
 
     @Override
     public Response<ProcessoDetailDTO> getById(Long id) {
@@ -271,17 +267,16 @@ public class ProcessoServiceImpl implements ProcessoService {
     }
 
     @Override
-    public void patchProcessoById(Long id, JsonNode patch) {
-
+    @Transactional
+    public void patchProcessoById(Long id, UpdateProcessoDTO dto) {
         Processo processo = processoRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Processo não encontrado"));
+                .orElseThrow(() -> new NotFoundException("Processo não encontrado com id: " + id));
 
-        JsonNode target = mapper.convertValue(processo, JsonNode.class);
+        if (dto.getDirecaoId() != null) {
+            Optional<Direcao> direcao = direcaoRepository.findById(dto.getDirecaoId());
+            direcao.ifPresent(processo::setDirecao);
+        }
 
-        JsonNode patched = JsonPatch.apply(patch, target);
-
-        Processo processoUpdated = mapper.treeToValue((TreeNode) patched, Processo.class);
-
-        processoRepository.save(processoUpdated);
+        processoRepository.save(processo);
     }
 }

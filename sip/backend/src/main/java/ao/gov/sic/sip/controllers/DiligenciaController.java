@@ -4,8 +4,8 @@ import ao.gov.sic.sip.dtos.DiligenciaDTO;
 import ao.gov.sic.sip.dtos.Response;
 import ao.gov.sic.sip.services.DiligenciaService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

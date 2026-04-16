@@ -1,7 +1,6 @@
 package ao.gov.sic.sip.services.impl;
 
 import ao.gov.sic.sip.dtos.ArguidoDTO;
-import ao.gov.sic.sip.dtos.QueixosoDTO;
 import ao.gov.sic.sip.dtos.Response;
 import ao.gov.sic.sip.entities.*;
 import ao.gov.sic.sip.enums.TipoParticipante;

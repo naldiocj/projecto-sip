@@ -2,8 +2,6 @@ package ao.gov.sic.sip.dtos;
 
 import ao.gov.sic.sip.enums.EstadoProcesso;
 import ao.gov.sic.sip.enums.TipoProcesso;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

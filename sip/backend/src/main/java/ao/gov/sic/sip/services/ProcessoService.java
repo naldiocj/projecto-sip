@@ -1,10 +1,6 @@
 package ao.gov.sic.sip.services;
 
-import ao.gov.sic.sip.dtos.ProcessoDTO;
-import ao.gov.sic.sip.dtos.ProcessoDetailDTO;
-import ao.gov.sic.sip.dtos.ProcessoResDTO;
-import ao.gov.sic.sip.dtos.Response;
-import com.fasterxml.jackson.databind.JsonNode;
+import ao.gov.sic.sip.dtos.*;
 
 import java.util.List;
 
@@ -21,5 +17,5 @@ public interface ProcessoService {
 
     Response<List<ProcessoResDTO>> getAll(String term);
 
-    void patchProcessoById(Long id, JsonNode patch);
+    void patchProcessoById(Long id, UpdateProcessoDTO dto);
 }

@@ -2,7 +2,6 @@ package ao.gov.sic.sip.mappers;
 
 import ao.gov.sic.sip.dtos.DiligenciaDTO;
 import ao.gov.sic.sip.entities.Diligencia;
-import ao.gov.sic.sip.enums.EstadoDiligencia;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

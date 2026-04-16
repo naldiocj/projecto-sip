@@ -1,6 +1,5 @@
 package ao.gov.sic.sip.dtos;
 
-import ao.gov.sic.sip.entities.Role;
 import ao.gov.sic.sip.enums.AuthMethod;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;

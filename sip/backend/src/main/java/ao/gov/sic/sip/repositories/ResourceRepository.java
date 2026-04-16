@@ -1,6 +1,5 @@
 package ao.gov.sic.sip.repositories;
 
-import ao.gov.sic.sip.entities.Advogado;
 import ao.gov.sic.sip.entities.Resource;
 import ao.gov.sic.sip.entities.Role;
 import org.springframework.data.jpa.repository.JpaRepository;

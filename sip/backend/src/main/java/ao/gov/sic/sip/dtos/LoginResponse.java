@@ -1,6 +1,5 @@
 package ao.gov.sic.sip.dtos;
 
-import ao.gov.sic.sip.entities.Action;
 import ao.gov.sic.sip.enums.ActionType;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
