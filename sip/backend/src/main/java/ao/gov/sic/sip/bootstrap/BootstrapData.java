@@ -16,6 +16,7 @@ public class BootstrapData implements CommandLineRunner {
     private final TiposCrimes tiposCrimes;
     private final ResourcesAndActions resourcesAndActions;
     private final Direcoes direcoes;
+    private final Instrutores instrutores;
 
     @Override
     public void run(String... args) throws Exception {
@@ -26,6 +27,6 @@ public class BootstrapData implements CommandLineRunner {
         tiposCrimes.loadData();
         resourcesAndActions.loadData();
         direcoes.loadData();
-
+        instrutores.loadData();
     }
 }

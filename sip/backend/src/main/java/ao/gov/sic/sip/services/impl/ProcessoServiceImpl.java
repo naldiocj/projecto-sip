@@ -238,6 +238,7 @@ public class ProcessoServiceImpl implements ProcessoService {
     public Response<List<ProcessoResDTO>> getAll(String term) {
 
         User user = userService.currentUser();
+
         // 1. Build the specification based on the term
         Specification<Processo> spec = ProcessoSpecifications.hasTerm(term);
 
@@ -245,13 +246,53 @@ public class ProcessoServiceImpl implements ProcessoService {
         List<ProcessoResDTO> processos = new ArrayList<>();
 
         boolean isAdmin = user.getRoles().stream().anyMatch(role -> role.getName().equals("ADMIN"));
+        boolean isInstrutor = user.getRoles().stream().anyMatch(role -> role.getName().equals("INSTRUTOR"));
+        boolean isSecretaria = user.getRoles().stream().anyMatch(role -> role.getName().equals("SECRETARIA"));
+        boolean isSecretariaGeral = user.getRoles().stream().anyMatch(role -> role.getName().equals("SECRETARIA_GERAK"));
+
+
 
         if (isAdmin) {
             processos = processoRepository.findAll(spec)
                     .stream()
                     .map(processoMapper::processoToProcessoResDTO)
                     .toList();
-        } else {
+        } else if (isInstrutor) {
+            Instrutor instrutor = instrutorRepository.findAll().stream()
+                    .filter(i -> i.getUser().getId().equals(user.getId())).findFirst().orElse(null);
+
+            processos = processoRepository.findAll(spec)
+                    .stream()
+                    .filter(processo -> {
+                        assert instrutor != null;
+                        return processo.getInstrutor().getDirecao().getId().equals(instrutor.getDirecao().getId());
+                    })
+                    .map(processoMapper::processoToProcessoResDTO)
+                    .toList();
+        } else if (isSecretaria) {
+            // TODO CRIA Secretaria Table
+            Instrutor instrutor = instrutorRepository.findAll().stream()
+                    .filter(i -> i.getUser().getId().equals(user.getId())).findFirst().orElse(null);
+
+            processos = processoRepository.findAll(spec)
+                    .stream()
+                    .filter(processo -> {
+                        assert instrutor != null;
+                        return processo.getInstrutor().getDirecao().getId().equals(instrutor.getDirecao().getId());
+                    })
+                    .map(processoMapper::processoToProcessoResDTO)
+                    .toList();
+        } else if (isSecretariaGeral) {
+            // TODO CRIA Secretaria Table
+            Instrutor instrutor = instrutorRepository.findAll().stream()
+                    .filter(i -> i.getUser().getId().equals(user.getId())).findFirst().orElse(null);
+
+            processos = processoRepository.findAll(spec)
+                    .stream()
+                    .map(processoMapper::processoToProcessoResDTO)
+                    .toList();
+        }
+        else {
             processos = processoRepository.findAll(spec)
                     .stream()
                     .filter(processo -> processo.getUser().getId().equals(user.getId()))
