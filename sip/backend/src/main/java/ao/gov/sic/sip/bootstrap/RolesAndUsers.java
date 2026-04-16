@@ -2,13 +2,15 @@ package ao.gov.sic.sip.bootstrap;
 
 import ao.gov.sic.sip.controllers.AuthController;
 import ao.gov.sic.sip.dtos.RegistrationRequest;
-import ao.gov.sic.sip.entities.Role;
-import ao.gov.sic.sip.repositories.RoleRepository;
-import ao.gov.sic.sip.repositories.UserRepository;
+import ao.gov.sic.sip.dtos.Response;
+import ao.gov.sic.sip.entities.*;
+import ao.gov.sic.sip.repositories.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 import static ao.gov.sic.sip.utils.Constants.*;
 
@@ -18,6 +20,9 @@ public class RolesAndUsers {
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
     private final AuthController authController;
+    private final DirectorRepository directorRepository;
+    private final DirecaoRepository direcaoRepository;
+    private final PatenteRepository patenteRepository;
 
     public void loadData() {
         loadRoles();
@@ -50,6 +55,11 @@ public class RolesAndUsers {
             instrutor.setRoles(List.of(INSTRUTOR));
             authController.register(instrutor);
 
+            Optional<User> user1 = userRepository.findByEmail("instrutor1@sic.gov.ao");
+            Optional<Direcao> direcao1 = direcaoRepository.findById(10L);
+            Optional<Patente> patente1 = patenteRepository.findById(15L);
+            createInstrutor(user1, direcao1, patente1);
+
             RegistrationRequest instrutor1 = new RegistrationRequest();
             instrutor1.setName("Instrutor");
             instrutor1.setEmail("instrutor@sic.gov.ao");
@@ -57,6 +67,12 @@ public class RolesAndUsers {
             instrutor1.setPhoneNumber("-");
             instrutor1.setRoles(List.of(INSTRUTOR));
             authController.register(instrutor1);
+
+            Optional<User> user2 = userRepository.findByEmail("instrutor@sic.gov.ao");
+            Optional<Direcao> direcao2 = direcaoRepository.findById(5L);
+            Optional<Patente> patente2 = patenteRepository.findById(14L);
+
+            createInstrutor(user2, direcao2, patente2);
 
             RegistrationRequest piquete = new RegistrationRequest();
             piquete.setName("PIQUETE");
@@ -89,6 +105,19 @@ public class RolesAndUsers {
             secretariaGeral.setPhoneNumber("-");
             secretariaGeral.setRoles(List.of(SECRETARIA_GERAL));
             authController.register(secretariaGeral);
+        }
+    }
+
+    private void createInstrutor(Optional<User> user2, Optional<Direcao> direcao2, Optional<Patente> patente2) {
+        if (user2.isPresent() && direcao2.isPresent() && patente2.isPresent()) {
+            user2.ifPresent(user -> Instrutor.builder()
+                    .user(user)
+                    .nomeCompleto("Instrutor 1")
+                    .patente(patente2.get())
+                    .cargo(null)
+                    .direcao(direcao2.get())
+                    .build());
+            userRepository.save(user2.get());
         }
     }
 

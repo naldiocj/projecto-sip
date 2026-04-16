@@ -72,11 +72,11 @@ public class AuthServiceImpl implements AuthService {
         userToSave.setProvider(AuthMethod.LOCAL);
         userToSave.setActive(true);
 
-        userRepository.save(userToSave);
-
+        User user = userRepository.save(userToSave);
 
         return Response.builder()
                 .statusCode(HttpStatus.OK.value())
+                .data(Map.of("id", user.getId()))
                 .message("User created successfully")
                 .build();
     }
