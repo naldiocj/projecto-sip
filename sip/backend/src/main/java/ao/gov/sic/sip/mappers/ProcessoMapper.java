@@ -12,7 +12,7 @@ import org.mapstruct.Mapping;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Mapper(uses = {TipoCrimeMapper.class, ArguidoMapper.class, QueixosoMapper.class, MagistradoMapper.class, InstrutorMapper.class, UserMapper.class, ItemMapper.class})
+@Mapper(uses = {TipoCrimeMapper.class, DirecaoMapper.class, ArguidoMapper.class, QueixosoMapper.class, MagistradoMapper.class, InstrutorMapper.class, UserMapper.class, ItemMapper.class})
 public interface ProcessoMapper {
     @Mapping(source = "queixosoId", target = "queixoso.id")
     @Mapping(source = "magistradoId", target = "magistrado.id")
