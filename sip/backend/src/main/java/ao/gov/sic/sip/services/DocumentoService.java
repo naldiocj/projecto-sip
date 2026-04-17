@@ -1,6 +1,6 @@
 package ao.gov.sic.sip.services;
 
-import ao.gov.sic.sip.dto.DocumentoDTO;
+import ao.gov.sic.sip.dtos.DocumentoDTO;
 
 import java.util.List;
 

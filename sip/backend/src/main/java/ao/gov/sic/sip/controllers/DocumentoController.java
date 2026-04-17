@@ -1,6 +1,6 @@
 package ao.gov.sic.sip.controllers;
 
-import ao.gov.sic.sip.dto.DocumentoDTO;
+import ao.gov.sic.sip.dtos.DocumentoDTO;
 import ao.gov.sic.sip.services.DocumentoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

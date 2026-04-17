@@ -1,6 +1,6 @@
 package ao.gov.sic.sip.mappers;
 
-import ao.gov.sic.sip.dto.DocumentoDTO;
+import ao.gov.sic.sip.dtos.DocumentoDTO;
 import ao.gov.sic.sip.entities.Documento;
 import org.springframework.stereotype.Component;
 

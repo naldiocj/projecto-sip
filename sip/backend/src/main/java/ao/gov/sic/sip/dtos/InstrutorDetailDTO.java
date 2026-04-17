@@ -16,7 +16,7 @@ public class InstrutorDetailDTO {
     private String nomeCompleto;
     private String patente;
     private String cargo;
-    private String direcao;
+    private DirecaoDTO direcao;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

@@ -25,6 +25,7 @@ public class ProcessoResDTO {
     private Set<Item> crimes;
     private Set<Item> arguidos;
     private DirecaoDTO direcao;
+    private SecretariaDTO secretaria;
     private QueixosoDTO queixoso;
     private MagistradoDTO magistrado;
     private InstrutorDTO instrutor;

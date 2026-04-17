@@ -12,11 +12,13 @@ import org.mapstruct.Mapping;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Mapper(uses = {TipoCrimeMapper.class, DirecaoMapper.class, ArguidoMapper.class, QueixosoMapper.class, MagistradoMapper.class, InstrutorMapper.class, UserMapper.class, ItemMapper.class})
+@Mapper(uses = {TipoCrimeMapper.class, DirecaoMapper.class, SecretariaMapper.class, ArguidoMapper.class, QueixosoMapper.class, MagistradoMapper.class, InstrutorMapper.class, UserMapper.class, ItemMapper.class}, componentModel = "spring")
 public interface ProcessoMapper {
     @Mapping(source = "queixosoId", target = "queixoso.id")
     @Mapping(source = "magistradoId", target = "magistrado.id")
     @Mapping(source = "instrutorId", target = "instrutor.id")
+    @Mapping(source = "direcaoId", target = "direcao.id")
+    @Mapping(source = "secretariaId", target = "secretaria.id")
     @Mapping(source = "userId", target = "user.id")
     @Mapping(target = "crimes", ignore = true)
     @Mapping(target = "arguidos", ignore = true)
@@ -25,6 +27,8 @@ public interface ProcessoMapper {
     @Mapping(source = "queixoso.id", target = "queixosoId")
     @Mapping(source = "magistrado.id", target = "magistradoId")
     @Mapping(source = "instrutor.id", target = "instrutorId")
+    @Mapping(source = "direcao.id", target = "direcaoId")
+    @Mapping(source = "secretaria.id", target = "secretariaId")
     @Mapping(source = "user.id", target = "userId")
     @Mapping(source = "crimes", target = "crimesIds")
     @Mapping(source = "arguidos", target = "arguidosIds")

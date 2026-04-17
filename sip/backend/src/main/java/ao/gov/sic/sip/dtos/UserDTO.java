@@ -16,6 +16,8 @@ public class UserDTO {
     private String email;
     private String phoneNumber;
 
+    DirecaoDTO direcao;
+
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

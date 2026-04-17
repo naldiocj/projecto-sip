@@ -1,9 +1,6 @@
 package ao.gov.sic.sip.bootstrap;
 
-import ao.gov.sic.sip.entities.Direcao;
-import ao.gov.sic.sip.entities.Instrutor;
-import ao.gov.sic.sip.entities.Patente;
-import ao.gov.sic.sip.entities.User;
+import ao.gov.sic.sip.entities.*;
 import ao.gov.sic.sip.repositories.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,26 +21,33 @@ public class Instrutores {
         Optional<User> user1 = userRepository.findByEmail("instrutor1@sic.gov.ao");
         Optional<Direcao> direcao1 = direcaoRepository.findById(10L);
         Optional<Patente> patente1 = patenteRepository.findById(15L);
-        createInstrutor(user1, direcao1, patente1);
+        createInstrutor("Instrutor 1", user1, direcao1, patente1);
 
         Optional<User> user2 = userRepository.findByEmail("instrutor@sic.gov.ao");
         Optional<Direcao> direcao2 = direcaoRepository.findById(5L);
         Optional<Patente> patente2 = patenteRepository.findById(14L);
 
-        createInstrutor(user2, direcao2, patente2);
+        createInstrutor("Instrutor 2", user2, direcao2, patente2);
     }
 
-    private void createInstrutor(Optional<User> user, Optional<Direcao> direcao, Optional<Patente> patente) {
+    private void createInstrutor(String nome, Optional<User> user, Optional<Direcao> direcao, Optional<Patente> patente) {
 
-        if (instrutorRepository.findAll().isEmpty()) {
+        if (user.isPresent() && direcao.isPresent() && patente.isPresent()) {
+            if (instrutorRepository.findByUser(user.get()).isPresent()) {
+                log.info("Instrutor com o email '{}' já existe. Ignorando...", user.get().getEmail());
+                return;
+            }
+
             Instrutor instrutor = Instrutor.builder()
                     .user(user.get())
-                    .nomeCompleto("Instrutor 1")
+                    .nomeCompleto(nome)
                     .patente(patente.get())
-                    .cargo(null)
                     .direcao(direcao.get())
                     .build();
             instrutorRepository.save(instrutor);
+            log.info("Instrutor '{}' criada com sucesso.", nome);
+        } else {
+            log.error("Não foi possível criar a instrutor '{}': Dependências (User, Direção ou Patente) não encontradas.", nome);
         }
 
     }

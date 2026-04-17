@@ -36,6 +36,7 @@ public class ProcessoServiceImpl implements ProcessoService {
     private final ArguidoRepository arguidoRepository;
     private final UserRepository userRepository;
     private final UserService userService;
+    private final SecretariaRepository secretariaRepository;
 
     @Qualifier("objectMapper")
     private final ObjectMapper mapper;
@@ -121,8 +122,21 @@ public class ProcessoServiceImpl implements ProcessoService {
             processo.setInstrutor(null);
         }
 
-        // Add null to direcao
-        processo.setDirector(null);
+        if (dto.getDirecaoId() != null) {
+            Direcao direcao = direcaoRepository.findById(dto.getDirecaoId())
+                    .orElseThrow(() -> new NotFoundException("Direção não encontrada"));
+            processo.setDirecao(direcao);
+        } else {
+            processo.setDirecao(null);
+        }
+
+        if (dto.getSecretariaId() != null) {
+            Secretaria secretaria = secretariaRepository.findById(dto.getSecretariaId())
+                    .orElseThrow(() -> new NotFoundException("Secretaria não encontrada"));
+            processo.setSecretaria(secretaria);
+        } else {
+            processo.setSecretaria(null);
+        }
 
         if (dto.getCrimesIds() != null && !dto.getCrimesIds().isEmpty()) {
             Set<TipoCrime> crimes = new HashSet<>(tipoCrimeRepository.findAllById(dto.getCrimesIds()));
@@ -152,7 +166,7 @@ public class ProcessoServiceImpl implements ProcessoService {
             processo.setEstadoProcesso(dto.getEstadoProcesso());
         }
 
-        processoRepository.save(processo);
+        processoRepository.saveAndFlush(processo);
 
         return Response.builder()
                 .statusCode(HttpStatus.CREATED.value())
@@ -206,6 +220,16 @@ public class ProcessoServiceImpl implements ProcessoService {
                         .orElseThrow(() -> new NotFoundException("Instrutor não encontrado"));
                 processo.setInstrutor(instrutor);
             }
+            if (dto.getDirecaoId() != null) {
+                Direcao direcao = direcaoRepository.findById(dto.getDirecaoId())
+                        .orElseThrow(() -> new NotFoundException("Direção não encontrada"));
+                processo.setDirecao(direcao);
+            }
+            if (dto.getSecretariaId() != null) {
+                Secretaria secretaria = secretariaRepository.findById(dto.getSecretariaId())
+                        .orElseThrow(() -> new NotFoundException("Secretaria não encontrada"));
+                processo.setSecretaria(secretaria);
+            }
             if (dto.getCrimesIds() != null) {
                 Set<TipoCrime> crimes = new HashSet<>(tipoCrimeRepository.findAllById(dto.getCrimesIds()));
                 processo.setCrimes(crimes);
@@ -248,7 +272,7 @@ public class ProcessoServiceImpl implements ProcessoService {
         boolean isAdmin = user.getRoles().stream().anyMatch(role -> role.getName().equals("ADMIN"));
         boolean isInstrutor = user.getRoles().stream().anyMatch(role -> role.getName().equals("INSTRUTOR"));
         boolean isSecretaria = user.getRoles().stream().anyMatch(role -> role.getName().equals("SECRETARIA"));
-        boolean isSecretariaGeral = user.getRoles().stream().anyMatch(role -> role.getName().equals("SECRETARIA_GERAK"));
+        boolean isSecretariaGeral = user.getRoles().stream().anyMatch(role -> role.getName().equals("SECRETARIA_GERAL"));
 
 
 
@@ -259,34 +283,26 @@ public class ProcessoServiceImpl implements ProcessoService {
                     .toList();
         } else if (isInstrutor) {
             Instrutor instrutor = instrutorRepository.findAll().stream()
-                    .filter(i -> i.getUser().getId().equals(user.getId())).findFirst().orElse(null);
+                    .filter(i -> i.getUser().getId().equals(user.getId())).findFirst()
+                    .orElseThrow(()-> new NotFoundException("Instrutor não encontrado"));
 
             processos = processoRepository.findAll(spec)
                     .stream()
-                    .filter(processo -> {
-                        assert instrutor != null;
-                        return processo.getInstrutor().getDirecao().getId().equals(instrutor.getDirecao().getId());
-                    })
+                    .filter(processo -> processo.getInstrutor().getId().equals(instrutor.getId()))
                     .map(processoMapper::processoToProcessoResDTO)
                     .toList();
         } else if (isSecretaria) {
-            // TODO CRIA Secretaria Table
-            Instrutor instrutor = instrutorRepository.findAll().stream()
-                    .filter(i -> i.getUser().getId().equals(user.getId())).findFirst().orElse(null);
+            Secretaria secretaria = secretariaRepository.findAll()
+                    .stream()
+                    .filter(s -> s.getUser().getId().equals(user.getId())).findFirst()
+                    .orElseThrow(() -> new NotFoundException("Secretaria não encontrada"));
 
             processos = processoRepository.findAll(spec)
                     .stream()
-                    .filter(processo -> {
-                        assert instrutor != null;
-                        return processo.getInstrutor().getDirecao().getId().equals(instrutor.getDirecao().getId());
-                    })
+                    .filter(processo -> processo.getDirecao().getId().equals(secretaria.getDirecao().getId()))
                     .map(processoMapper::processoToProcessoResDTO)
                     .toList();
         } else if (isSecretariaGeral) {
-            // TODO CRIA Secretaria Table
-            Instrutor instrutor = instrutorRepository.findAll().stream()
-                    .filter(i -> i.getUser().getId().equals(user.getId())).findFirst().orElse(null);
-
             processos = processoRepository.findAll(spec)
                     .stream()
                     .map(processoMapper::processoToProcessoResDTO)
@@ -316,6 +332,11 @@ public class ProcessoServiceImpl implements ProcessoService {
         if (dto.getDirecaoId() != null) {
             Optional<Direcao> direcao = direcaoRepository.findById(dto.getDirecaoId());
             direcao.ifPresent(processo::setDirecao);
+        }
+
+        if (dto.getInstrutorId() != null) {
+            Optional<Instrutor> instrutor = instrutorRepository.findById(dto.getInstrutorId());
+            instrutor.ifPresent(processo::setInstrutor);
         }
 
         processoRepository.save(processo);

@@ -28,5 +28,7 @@ public class ProcessoDTO {
     private Long queixosoId;
     private Long magistradoId;
     private Long instrutorId;
+    private Long direcaoId;
+    private Long secretariaId;
     private Long userId;
 }

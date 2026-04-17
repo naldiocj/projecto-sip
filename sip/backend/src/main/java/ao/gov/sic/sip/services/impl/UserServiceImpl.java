@@ -1,11 +1,17 @@
 package ao.gov.sic.sip.services.impl;
 
 
+import ao.gov.sic.sip.dtos.DirecaoDTO;
 import ao.gov.sic.sip.dtos.Response;
 import ao.gov.sic.sip.dtos.UserDTO;
+import ao.gov.sic.sip.entities.Direcao;
+import ao.gov.sic.sip.entities.Secretaria;
 import ao.gov.sic.sip.entities.User;
 import ao.gov.sic.sip.exceptions.NotFoundException;
+import ao.gov.sic.sip.mappers.DirecaoMapper;
 import ao.gov.sic.sip.mappers.UserMapper;
+import ao.gov.sic.sip.repositories.DirecaoRepository;
+import ao.gov.sic.sip.repositories.SecretariaRepository;
 import ao.gov.sic.sip.repositories.UserRepository;
 import ao.gov.sic.sip.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +26,7 @@ import org.springframework.util.StringUtils;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -29,6 +36,9 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
+    private final DirecaoRepository direcaoRepository;
+    private final SecretariaRepository secretariaRepository;
+    private final DirecaoMapper direcaoMapper;
 
     @Override
     public User currentUser() {
@@ -101,6 +111,29 @@ public class UserServiceImpl implements UserService {
         log.info("Iniciando o Detalhes da conta de usuário ...");
         User user = currentUser();
         UserDTO userDTO = userMapper.userToUserDTO(user);
+
+        boolean isAdmin = user.getRoles().stream().anyMatch(role -> role.getName().equals("ADMIN"));
+        boolean isInstrutor = user.getRoles().stream().anyMatch(role -> role.getName().equals("INSTRUTOR"));
+        boolean isSecretaria = user.getRoles().stream().anyMatch(role -> role.getName().equals("SECRETARIA"));
+        boolean isSecretariaGeral = user.getRoles().stream().anyMatch(role -> role.getName().equals("SECRETARIA_GERAL"));
+
+        if (isAdmin) {
+
+        } else if (isInstrutor) {
+
+        } else if (isSecretaria) {
+            Optional<Secretaria> secretaria = secretariaRepository.findAll()
+                            .stream().filter(d -> d.getUser().getId().equals(user.getId()))
+                    .findFirst();
+
+            Optional<DirecaoDTO> direcaoDTO = direcaoRepository.findAll().stream()
+                    .filter(d -> d.getId().equals(secretaria.get().getDirecao().getId()))
+                    .map(direcaoMapper::direcaoToDirecaoDTO)
+                    .findFirst();
+
+            direcaoDTO.ifPresent(userDTO::setDirecao);
+        }
+
 
         return Response.<UserDTO>builder()
                 .statusCode(HttpStatus.OK.value())

@@ -5,6 +5,7 @@ import ao.gov.sic.sip.dtos.InstrutorDetailDTO;
 import ao.gov.sic.sip.dtos.Response;
 import ao.gov.sic.sip.entities.*;
 import ao.gov.sic.sip.exceptions.NotFoundException;
+import ao.gov.sic.sip.mappers.DirecaoMapper;
 import ao.gov.sic.sip.mappers.InstrutorMapper;
 import ao.gov.sic.sip.records.FileRecord;
 import ao.gov.sic.sip.records.InstrutorCSVRecord;
@@ -35,6 +36,7 @@ public class InstrutorServiceImpl implements InstrutorService {
     private final UserRepository userRepository;
     private final InstrutorCSVService instrutorCSVService;
     private final StorageFileService storageFileService;
+    private final DirecaoMapper direcaoMapper;
 
     @Override
     public Response<InstrutorDTO> getById(Long id) {
@@ -202,10 +204,11 @@ public class InstrutorServiceImpl implements InstrutorService {
                 .filter(instrutor -> instrutor.getDirecao().getId().equals(direccaoId))
                 .map(instrutor -> InstrutorDetailDTO.builder()
                         .createdAt(LocalDateTime.now())
+                        .id(instrutor.getId())
                         .nomeCompleto(instrutor.getNomeCompleto())
-                        .direcao(instrutor.getDirecao().getNome())
+                        .direcao(direcaoMapper.direcaoToDirecaoDTO(instrutor.getDirecao()))
                         .patente(instrutor.getPatente().getNome())
-                        .cargo(instrutor.getCargo().getNome())
+                        .cargo(instrutor.getCargo() != null ? instrutor.getCargo().getNome() : null)
                         .build())
                 .toList();
 

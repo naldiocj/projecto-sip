@@ -22,7 +22,7 @@ public class StorageFileServiceImpl implements StorageFileService {
     private final Path fileStorageLocation;
 
     public StorageFileServiceImpl(@Value("${file.upload-dir}") String uploadDir) {
-        this.fileStorageLocation = Paths.get(uploadDir).toAbsolutePath().normalize();
+        this.fileStorageLocation = Paths.get(uploadDir, "uploads").toAbsolutePath().normalize();
 
         try {
             Files.createDirectories(this.fileStorageLocation);

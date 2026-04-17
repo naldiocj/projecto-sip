@@ -1,4 +1,4 @@
-package ao.gov.sic.sip.dto;
+package ao.gov.sic.sip.dtos;
 
 import lombok.*;
 

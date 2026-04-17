@@ -11,4 +11,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UpdateProcessoDTO {
     private Long direcaoId;
+    private Long instrutorId;
 }

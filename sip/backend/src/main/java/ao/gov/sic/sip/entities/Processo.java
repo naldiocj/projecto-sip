@@ -91,6 +91,10 @@ public class Processo {
     private Direcao direcao;
 
     @ManyToOne
+    @JoinColumn(name = "secretaria_id")
+    private Secretaria secretaria;
+
+    @ManyToOne
     @JoinColumn(name = "director_id")
     private Director director;
 
