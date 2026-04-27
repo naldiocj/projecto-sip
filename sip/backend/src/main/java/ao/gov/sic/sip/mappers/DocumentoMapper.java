@@ -16,6 +16,7 @@ public class DocumentoMapper {
                 .tipoModelo(entity.getTipoModelo())
                 .userId(entity.getUser() != null ? entity.getUser().getId() : null)
                 .userName(entity.getUser() != null ? entity.getUser().getName() : null)
+                .pagina(entity.getPagina())
                 .conteudo(entity.getConteudo())
                 .createdAt(entity.getCreatedAt())
                 .updatedAt(entity.getUpdatedAt())

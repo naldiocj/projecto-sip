@@ -30,6 +30,9 @@ public class Documento {
     @Column(nullable = false)
     private String tipoModelo;
 
+    @Column(nullable = false)
+    private Integer pagina;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;

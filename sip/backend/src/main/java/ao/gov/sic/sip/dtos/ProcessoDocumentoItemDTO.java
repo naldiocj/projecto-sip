@@ -17,4 +17,5 @@ public class ProcessoDocumentoItemDTO {
     private String descricao;
     private String url;
     private String processoNumero;
+    private DocumentoDTO documento;
 }

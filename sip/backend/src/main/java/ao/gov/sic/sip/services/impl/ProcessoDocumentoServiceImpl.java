@@ -1,14 +1,18 @@
 package ao.gov.sic.sip.services.impl;
 
+import ao.gov.sic.sip.dtos.DocumentoDTO;
 import ao.gov.sic.sip.dtos.ProcessoDocumentoDTO;
 import ao.gov.sic.sip.dtos.ProcessoDocumentoItemDTO;
 import ao.gov.sic.sip.dtos.Response;
+import ao.gov.sic.sip.entities.Documento;
 import ao.gov.sic.sip.entities.Processo;
 import ao.gov.sic.sip.entities.ProcessoDocumento;
 import ao.gov.sic.sip.entities.User;
 import ao.gov.sic.sip.exceptions.BadRequestException;
 import ao.gov.sic.sip.exceptions.NotFoundException;
+import ao.gov.sic.sip.mappers.DocumentoMapper;
 import ao.gov.sic.sip.records.FileRecord;
+import ao.gov.sic.sip.repositories.DocumentoRepository;
 import ao.gov.sic.sip.repositories.ProcessoDocumentoRepository;
 import ao.gov.sic.sip.repositories.ProcessoRepository;
 import ao.gov.sic.sip.services.ProcessoDocumentoService;
@@ -30,6 +34,8 @@ public class ProcessoDocumentoServiceImpl implements ProcessoDocumentoService {
     private final StorageFileService storageFileService;
     private final ProcessoDocumentoRepository processoDocumentoRepository;
     private final UserService userService;
+    private final DocumentoRepository documentoRepository;
+    private final DocumentoMapper documentoMapper;
 
     @Override
     public Response<?> saveDocumento(ProcessoDocumentoDTO dto) {
@@ -39,13 +45,36 @@ public class ProcessoDocumentoServiceImpl implements ProcessoDocumentoService {
             throw new NotFoundException("Processo não encontrado");
         }
 
+
+
         User user = userService.currentUser();
+
+        Integer ultimaPagina = documentoRepository.findMaxPaginaByNumeroProcesso(dto.getProcessoNumero());
+
+        Documento documento = Documento.builder()
+                        .conteudo(null)
+                        .numeroProcesso(dto.getProcessoNumero())
+                        .tipoModelo(dto.getTipo())
+                        .pagina(null)
+                        .user(user)
+                .build();
+
+        if (ultimaPagina == null) {
+            documento.setPagina(1); // Primeira página do processo
+        } else {
+            documento.setPagina(ultimaPagina + 1);
+        }
+
+        documento.setUser(user);
+        Documento documentoSaved = documentoRepository.save(documento);
 
         try {
             FileRecord fileRecord = storageFileService.saveToFolder(dto.getArquivo(), "Documentos");
+
             processoDocumentoRepository.save(
                     ProcessoDocumento.builder()
                             .processo(processo)
+                            .documento(documentoSaved)
                             .arquivo(fileRecord.getFileName())
                             .tipo(dto.getTipo())
                             .user(user)
@@ -76,6 +105,7 @@ public class ProcessoDocumentoServiceImpl implements ProcessoDocumentoService {
                         .tipo(documento.getTipo())
                         .descricao(documento.getDescricao())
                         .titulo(documento.getTitulo())
+                        .documento(documentoMapper.toDTO(documento.getDocumento()))
                         .build())
                 .toList();
 

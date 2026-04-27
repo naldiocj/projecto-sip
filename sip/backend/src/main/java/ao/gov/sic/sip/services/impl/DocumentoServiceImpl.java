@@ -41,10 +41,21 @@ public class DocumentoServiceImpl implements DocumentoService {
         if (user == null) {
             throw new NotFoundException("Usuário não encontrado");
         }
-        
+
+        Integer ultimaPagina = repository.findMaxPaginaByNumeroProcesso(dto.getNumeroProcesso());
+
         Documento entity = mapper.toEntity(dto);
+
+        if (ultimaPagina == null) {
+            entity.setPagina(1); // Primeira página do processo
+        } else {
+            entity.setPagina(ultimaPagina + 1);
+        }
+        
         entity.setUser(user);
         DocumentoDTO documentoDTO = mapper.toDTO(repository.save(entity));
+
+
 
         Processo processo = processoRepository.findFirstByNumero(dto.getNumeroProcesso());
 
@@ -55,6 +66,7 @@ public class DocumentoServiceImpl implements DocumentoService {
         processoDocumentoRepository.save(
                 ProcessoDocumento.builder()
                         .processo(processo)
+                        .documento(entity)
                         .arquivo(null)
                         .tipo(dto.getTipoModelo())
                         .user(user)
@@ -65,7 +77,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 
 
 
-        return null;
+        return documentoDTO;
     }
 
     @Override

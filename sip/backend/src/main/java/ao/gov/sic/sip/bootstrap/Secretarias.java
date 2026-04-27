@@ -34,6 +34,11 @@ public class Secretarias {
         Optional<Patente> patente2 = patenteRepository.findById(14L);
 
         createSecretaria("Secretaria Geral", user2, direcao2, patente2);
+
+        Optional<User> user3 = userRepository.findByEmail("secretaria1@sic.gov.ao");
+        Optional<Direcao> direcao3 = direcaoRepository.findById(5L);
+        Optional<Patente> patente3 = patenteRepository.findById(6L);
+        createSecretaria("Secretaria 1", user3, direcao3, patente3);
     }
 
     private void createSecretaria(String nome, Optional<User> user, Optional<Direcao> direcao, Optional<Patente> patente) {

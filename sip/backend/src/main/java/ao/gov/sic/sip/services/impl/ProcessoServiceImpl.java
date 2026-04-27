@@ -290,6 +290,11 @@ public class ProcessoServiceImpl implements ProcessoService {
                     .stream()
                     .filter(processo -> processo.getInstrutor() != null && processo.getInstrutor().getId().equals(instrutor.getId()))
                     .map(processoMapper::processoToProcessoResDTO)
+                    .peek(p -> {
+                        if (p.getDirecao() == null) {
+                            p.setDirecao(null);
+                        }
+                    })
                     .toList();
         } else if (isSecretaria) {
             Secretaria secretaria = secretariaRepository.findAll()

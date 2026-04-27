@@ -10,39 +10,37 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "processos_documentos")
+@Table(name = "despachos")
 @Setter
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@SQLDelete(sql = "UPDATE processos_documentos SET is_deleted = true WHERE id=?")
+@SQLDelete(sql = "UPDATE despachos SET is_deleted = true WHERE id=?")
 @SQLRestriction("is_deleted=false")
-public class ProcessoDocumento {
+public class Despacho {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String titulo;
-
-    private String tipo;
+    private String numeroProcesso;
 
     @Column(columnDefinition = "TEXT")
-    private String descricao;
+    private String decisao;
 
-    private String arquivo;
+    private LocalDateTime dataDespacho;
 
-    @ManyToOne
+    private String autoridadeResponsavel;
+
+    @Column(columnDefinition = "TEXT")
+    private String observacoes;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "processo_id")
     private Processo processo;
 
-    @ManyToOne
-    @JoinColumn(name = "documento_id")
-    private Documento documento;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @Builder.Default
+    private boolean isFinalizado = false;
 
     @Builder.Default
     private boolean isDeleted = Boolean.FALSE;

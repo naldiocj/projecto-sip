@@ -20,6 +20,8 @@ public class ProcessoDocumentoDTO {
     private String descricao;
     private MultipartFile arquivo;
     private String processoNumero;
+    private Long documentoId;
+    private DocumentoDTO documentoDTO;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

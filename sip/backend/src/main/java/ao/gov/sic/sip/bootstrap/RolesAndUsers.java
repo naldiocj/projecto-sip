@@ -96,6 +96,14 @@ public class RolesAndUsers {
             secretariaGeral.setPhoneNumber("-");
             secretariaGeral.setRoles(List.of(SECRETARIA_GERAL));
             authController.register(secretariaGeral);
+
+            RegistrationRequest secretaria1 = new RegistrationRequest();
+            secretaria1.setName("SECRETARIA 1");
+            secretaria1.setEmail("secretaria1@sic.gov.ao");
+            secretaria1.setPassword("123456");
+            secretaria1.setPhoneNumber("-");
+            secretaria1.setRoles(List.of(SECRETARIA));
+            authController.register(secretaria1);
         }
     }
 
