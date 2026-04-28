@@ -20,7 +20,7 @@ public class TestemunhaController {
     private final TestemunhaService testemunhaService;
 
     @GetMapping(TESTEMUNHA_PATH)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PGR', 'SECRETARIA', 'SECRETARIA_GERAL')")
     public ResponseEntity<Response<List<TestemunhaDTO>>> getAllTestemunhas() {
         return ResponseEntity.ok(testemunhaService.getAll());
     }

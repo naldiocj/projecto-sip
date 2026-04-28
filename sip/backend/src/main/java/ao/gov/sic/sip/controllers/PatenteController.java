@@ -22,7 +22,7 @@ public class PatenteController {
     private final PatenteService patenteService;
 
     @GetMapping(PATENT_PATH)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'AGENT')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA', 'SECRETARIA_GERAL')")
     public ResponseEntity<Response<List<PatenteDTO>>> getAllPatents() {
         return ResponseEntity.ok(patenteService.getAllPatentes());
     }

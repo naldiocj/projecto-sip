@@ -21,13 +21,13 @@ public class QueixosoController {
     private final QueixosoService queixosoService;
 
     @GetMapping(QUEIXOSO_PATH)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PGR', 'SECRETARIA', 'SECRETARIA_GERAL')")
     public ResponseEntity<Response<List<QueixosoDTO>>> getAllQueixosos() {
         return ResponseEntity.ok(queixosoService.getAll());
     }
 
     @GetMapping(QUEIXOSO_PATH_ID)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PGR', 'SECRETARIA', 'SECRETARIA_GERAL')")
     public ResponseEntity<Response<?>> getQueixosoById(@PathVariable("queixosoId") Long queixosoId) {
         return ResponseEntity.ok(queixosoService.getById(queixosoId));
     }

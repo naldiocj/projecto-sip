@@ -16,6 +16,7 @@ public class SecretariaDTO {
     private Long patenteId;
     private SecretariaType type;
     private Long direcaoId;
+    private DirecaoDTO direcao;
     private Long userId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

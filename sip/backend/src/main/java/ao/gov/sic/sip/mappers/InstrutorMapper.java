@@ -5,7 +5,7 @@ import ao.gov.sic.sip.entities.Instrutor;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper
+@Mapper(uses = {DirecaoMapper.class})
 public interface InstrutorMapper {
     @Mapping(source = "patenteId", target = "patente.id")
     @Mapping(source = "cargoId", target = "cargo.id")

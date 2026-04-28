@@ -21,33 +21,33 @@ public class AdvogadoController {
     private final AdvogadoService advogadoService;
 
     @GetMapping(ADVOGADO_PATH)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PGR', 'SECRETARIA', 'SECRETARIA_GERAL')")
     public ResponseEntity<Response<List<AdvogadoDTO>>> getAllAdvogados() {
         return ResponseEntity.ok(advogadoService.getAll());
     }
 
     @GetMapping(ADVOGADO_PATH_ID)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PGR', 'SECRETARIA', 'SECRETARIA_GERAL')")
     public ResponseEntity<Response<?>> getAdvogadoById(@PathVariable("advogadoId") Long advogadoId) {
 
         return ResponseEntity.ok(advogadoService.getById(advogadoId));
     }
 
     @PostMapping(ADVOGADO_PATH)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'SECRETARIA')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PGR', 'SECRETARIA', 'SECRETARIA_GERAL')")
     public ResponseEntity<?> createAdvogado(@Validated @RequestBody AdvogadoDTO dto) {
         dto.setProcessoNumero(ProcessoUtils.cvtToProcessoNumero(dto.getProcessoNumero()));
         return ResponseEntity.ok(advogadoService.create(dto));
     }
 
     @PostMapping(ADVOGADO_PATH_ID)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'SECRETARIA')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PGR', 'SECRETARIA', 'SECRETARIA_GERAL')")
     public ResponseEntity<?> updateAdvogadoById(@RequestBody AdvogadoDTO dto, @PathVariable("advogadoId") Long advogadoId) {
         return ResponseEntity.ok(advogadoService.updateById(dto, advogadoId));
     }
 
     @DeleteMapping(ADVOGADO_PATH_ID)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'SECRETARIA')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PGR', 'SECRETARIA', 'SECRETARIA_GERAL')")
     public ResponseEntity<?> deleteAdvogadoById(@PathVariable("advogadoId") Long advogadoId) {
         return ResponseEntity.ok(advogadoService.deleteById(advogadoId));
     }

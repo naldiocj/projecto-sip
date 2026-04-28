@@ -21,13 +21,13 @@ public class ArguidoController {
     private final ArguidoService arguidoService;
 
     @GetMapping(ARGUIDO_PATH)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PGR', 'SECRETARIA', 'SECRETARIA_GERAL')")
     public ResponseEntity<Response<List<ArguidoDTO>>> getAllArguidos() {
         return ResponseEntity.ok(arguidoService.getAll());
     }
 
     @GetMapping(ARGUIDO_PATH_ID)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PGR', 'SECRETARIA', 'SECRETARIA_GERAL')")
     public ResponseEntity<Response<?>> getArguidoById(@PathVariable("arguidoId") Long arguidoId) {
         return ResponseEntity.ok(arguidoService.getById(arguidoId));
     }

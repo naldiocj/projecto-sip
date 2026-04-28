@@ -20,7 +20,7 @@ public class UserController {
     private final UserService userService;
 
     @PutMapping(USER_PATH)
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PGR', 'SECRETARIA', 'SECRETARIA_GERAL')")
     public ResponseEntity<Response<?>> updateMyAccount(@RequestBody UserDTO userDTO) {
         return ResponseEntity.ok(userService.updateMyAccount(userDTO));
     }
@@ -32,7 +32,7 @@ public class UserController {
     }
 
     @GetMapping(USER_PATH)
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PGR', 'SECRETARIA', 'SECRETARIA_GERAL')")
     public ResponseEntity<Response<List<UserDTO>>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
     }

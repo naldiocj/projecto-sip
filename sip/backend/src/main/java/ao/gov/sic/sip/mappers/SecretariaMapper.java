@@ -5,7 +5,7 @@ import ao.gov.sic.sip.entities.Secretaria;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {PatenteMapper.class, DirecaoMapper.class, UserMapper.class})
 public interface SecretariaMapper {
     @Mapping(source = "patente.id", target = "patenteId")
     @Mapping(source = "direcao.id", target = "direcaoId")

@@ -304,7 +304,7 @@ public class ProcessoServiceImpl implements ProcessoService {
 
             processos = processoRepository.findAll(spec)
                     .stream()
-                    .filter(processo -> processo.getDirecao().getId().equals(secretaria.getDirecao().getId()))
+                    .filter(processo -> processo.getDirecao() != null && processo.getDirecao().getId().equals(secretaria.getDirecao().getId()))
                     .map(processoMapper::processoToProcessoResDTO)
                     .toList();
         } else if (isSecretariaGeral) {
