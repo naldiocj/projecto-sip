@@ -4,18 +4,14 @@ import ao.gov.sic.sip.dtos.LoginRequest;
 import ao.gov.sic.sip.dtos.LoginResponse;
 import ao.gov.sic.sip.dtos.RegistrationRequest;
 import ao.gov.sic.sip.dtos.Response;
-import ao.gov.sic.sip.entities.Action;
-import ao.gov.sic.sip.entities.Resource;
-import ao.gov.sic.sip.entities.Role;
-import ao.gov.sic.sip.entities.User;
+import ao.gov.sic.sip.entities.*;
 import ao.gov.sic.sip.enums.ActionType;
 import ao.gov.sic.sip.enums.AuthMethod;
+import ao.gov.sic.sip.enums.SecretariaType;
 import ao.gov.sic.sip.exceptions.BadRequestException;
 import ao.gov.sic.sip.exceptions.NotFoundException;
 import ao.gov.sic.sip.exceptions.UnauthorizedException;
-import ao.gov.sic.sip.repositories.ResourceRepository;
-import ao.gov.sic.sip.repositories.RoleRepository;
-import ao.gov.sic.sip.repositories.UserRepository;
+import ao.gov.sic.sip.repositories.*;
 import ao.gov.sic.sip.security.JwtUtils;
 import ao.gov.sic.sip.services.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +26,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static ao.gov.sic.sip.utils.Constants.INSTRUTOR;
+import static ao.gov.sic.sip.utils.Constants.*;
 
 @Service
 @Slf4j
@@ -42,6 +38,8 @@ public class AuthServiceImpl implements AuthService {
     private final JwtUtils jwtUtils;
     private final RoleRepository roleRepository;
     private final ResourceRepository resourceRepository;
+    private final InstrutorRepository instrutorRepository;
+    private final SecretariaRepository secretariaRepository;
 
     @Override
     public Response<?> register(RegistrationRequest registrationRequest) {
@@ -50,17 +48,15 @@ public class AuthServiceImpl implements AuthService {
             throw new BadRequestException("Email exists");
         }
 
-        List<Role> userRoles;
+        Role role;
 
-        if (registrationRequest.getRoles() != null
-                && !registrationRequest.getRoles().isEmpty()) {
-            userRoles = registrationRequest.getRoles().stream()
-                    .map(roleName -> roleRepository.findByName(roleName.toUpperCase())
-                            .orElseThrow(() -> new NotFoundException("Role not found"))).toList();
-        } else {
-            Role defaultRole = roleRepository.findByName(INSTRUTOR)
+        if (registrationRequest.getRoleName() != null
+                && !registrationRequest.getRoleName().isEmpty()) {
+            role = roleRepository.findByName(registrationRequest.getRoleName().toUpperCase())
                     .orElseThrow(() -> new NotFoundException("Role not found"));
-            userRoles = List.of(defaultRole);
+        } else {
+            role = roleRepository.findByName(INSTRUTOR)
+                    .orElseThrow(() -> new NotFoundException("Role not found"));
         }
 
         User userToSave = new User();
@@ -68,11 +64,35 @@ public class AuthServiceImpl implements AuthService {
         userToSave.setEmail(registrationRequest.getEmail());
         userToSave.setPhoneNumber(registrationRequest.getPhoneNumber());
         userToSave.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
-        userToSave.setRoles(userRoles);
+        userToSave.setRoles(List.of(role));
         userToSave.setProvider(AuthMethod.LOCAL);
         userToSave.setActive(true);
 
         User user = userRepository.save(userToSave);
+
+
+        if (role.getName().equals(INSTRUTOR)) {
+            instrutorRepository.save(Instrutor.builder()
+                    .nomeCompleto(userToSave.getName())
+                    .user(userToSave)
+                    .build());
+        } else if (role.getName().equals(SECRETARIA)) {
+            secretariaRepository.save(Secretaria.builder()
+                    .nomeCompleto(userToSave.getName())
+                    .user(userToSave)
+                    .type(SecretariaType.ORGAO)
+                    .build());
+        } else if (role.getName().equals(SECRETARIA_GERAL)) {
+            secretariaRepository.save(Secretaria.builder()
+                    .nomeCompleto(userToSave.getName())
+                    .user(userToSave)
+                    .type(SecretariaType.GERAL)
+                    .build());
+        }
+
+        // TODO other here
+
+
 
         return Response.builder()
                 .statusCode(HttpStatus.OK.value())

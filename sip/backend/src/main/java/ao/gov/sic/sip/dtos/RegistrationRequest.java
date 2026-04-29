@@ -20,5 +20,6 @@ public class RegistrationRequest {
     @Size(min = 3, message = "Password must be at least 3 characters long")
     private String password;
     private String phoneNumber;
-    private List<String> roles;
+    @NotBlank(message = "RoleName is required")
+    private String roleName;
 }

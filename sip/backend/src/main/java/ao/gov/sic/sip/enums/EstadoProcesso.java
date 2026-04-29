@@ -5,5 +5,6 @@ public enum EstadoProcesso {
         ARQUIVADO,
         REMETIDO_JUIZO,
         REMETIDO_PGR,
-        TRAMITADO
+        TRAMITADO,
+        SENTENCIADO
 }

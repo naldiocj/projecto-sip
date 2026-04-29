@@ -34,7 +34,7 @@ public class RolesAndUsers {
             admin.setEmail("admin@sic.gov.ao");
             admin.setPassword("123456");
             admin.setPhoneNumber("-");
-            admin.setRoles(List.of(ADMIN, DIRECTOR, INSTRUTOR, PIQUETE, PGR));
+            admin.setRoleName(ADMIN);
             authController.register(admin);
 
             RegistrationRequest director = new RegistrationRequest();
@@ -42,7 +42,7 @@ public class RolesAndUsers {
             director.setEmail("director@sic.gov.ao");
             director.setPassword("123456");
             director.setPhoneNumber("-");
-            director.setRoles(List.of(DIRECTOR));
+            director.setRoleName(DIRECTOR);
             authController.register(director);
 
             RegistrationRequest instrutor = new RegistrationRequest();
@@ -50,7 +50,7 @@ public class RolesAndUsers {
             instrutor.setEmail("instrutor1@sic.gov.ao");
             instrutor.setPassword("123456");
             instrutor.setPhoneNumber("-");
-            instrutor.setRoles(List.of(INSTRUTOR));
+            instrutor.setRoleName(INSTRUTOR);
             authController.register(instrutor);
 
 
@@ -60,7 +60,7 @@ public class RolesAndUsers {
             instrutor1.setEmail("instrutor@sic.gov.ao");
             instrutor1.setPassword("123456");
             instrutor1.setPhoneNumber("-");
-            instrutor1.setRoles(List.of(INSTRUTOR));
+            instrutor1.setRoleName(INSTRUTOR);
             authController.register(instrutor1);
 
 
@@ -70,7 +70,7 @@ public class RolesAndUsers {
             piquete.setEmail("piquete@sic.gov.ao");
             piquete.setPassword("123456");
             piquete.setPhoneNumber("-");
-            piquete.setRoles(List.of(PIQUETE));
+            piquete.setRoleName(PIQUETE);
             authController.register(piquete);
 
             RegistrationRequest pgr = new RegistrationRequest();
@@ -78,7 +78,7 @@ public class RolesAndUsers {
             pgr.setEmail("pgr@sic.gov.ao");
             pgr.setPassword("123456");
             pgr.setPhoneNumber("-");
-            pgr.setRoles(List.of(PGR));
+            pgr.setRoleName(PGR);
             authController.register(pgr);
 
             RegistrationRequest secretaria = new RegistrationRequest();
@@ -86,7 +86,7 @@ public class RolesAndUsers {
             secretaria.setEmail("secretaria@sic.gov.ao");
             secretaria.setPassword("123456");
             secretaria.setPhoneNumber("-");
-            secretaria.setRoles(List.of(SECRETARIA));
+            secretaria.setRoleName(SECRETARIA);
             authController.register(secretaria);
 
             RegistrationRequest secretariaGeral = new RegistrationRequest();
@@ -94,7 +94,7 @@ public class RolesAndUsers {
             secretariaGeral.setEmail("secretaria.geral@sic.gov.ao");
             secretariaGeral.setPassword("123456");
             secretariaGeral.setPhoneNumber("-");
-            secretariaGeral.setRoles(List.of(SECRETARIA_GERAL));
+            secretariaGeral.setRoleName(SECRETARIA_GERAL);
             authController.register(secretariaGeral);
 
             RegistrationRequest secretaria1 = new RegistrationRequest();
@@ -102,7 +102,7 @@ public class RolesAndUsers {
             secretaria1.setEmail("secretaria1@sic.gov.ao");
             secretaria1.setPassword("123456");
             secretaria1.setPhoneNumber("-");
-            secretaria1.setRoles(List.of(SECRETARIA));
+            secretaria1.setRoleName(SECRETARIA);
             authController.register(secretaria1);
         }
     }
