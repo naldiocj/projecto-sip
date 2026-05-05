@@ -20,7 +20,7 @@ public class ArguidoAutoQueixaController {
     private final ArguidoAutoQueixaService arguidoAutoQueixaService;
 
     @GetMapping(ARGUIDO_AUTO_QUEIXA_PATH)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PGR', 'SECRETARIA', 'SECRETARIA_GERAL', 'PIQUETE')")
     public ResponseEntity<Response<List<ArguidoAutoQueixaDTO>>> getAllArguidosAutosQueixas() {
         return ResponseEntity.ok(arguidoAutoQueixaService.getAll());
     }

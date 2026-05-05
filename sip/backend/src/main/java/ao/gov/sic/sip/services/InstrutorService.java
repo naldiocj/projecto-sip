@@ -2,6 +2,7 @@ package ao.gov.sic.sip.services;
 
 import ao.gov.sic.sip.dtos.InstrutorDTO;
 import ao.gov.sic.sip.dtos.InstrutorDetailDTO;
+import ao.gov.sic.sip.dtos.InstrutorItemDTO;
 import ao.gov.sic.sip.dtos.Response;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,7 +19,7 @@ public interface InstrutorService {
 
     Response<?> bulkInstrutoresByCsv(MultipartFile csvFile);
 
-    Response<List<InstrutorDTO>> getAll();
+    Response<List<InstrutorItemDTO>> getAll();
 
     Response<List<InstrutorDetailDTO>> getAllPerDireccao(Long direccaoId);
 }

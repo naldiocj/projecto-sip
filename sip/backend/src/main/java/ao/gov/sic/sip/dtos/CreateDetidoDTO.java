@@ -12,9 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class DetidoDTO {
-    private Long id;
-    private String numeroProcesso;
+public class CreateDetidoDTO {
     private String nomeCompleto;
     private String nomePai;
     private String nomeMae;
@@ -30,11 +28,8 @@ public class DetidoDTO {
     private Integer idade;
     private Sexo sexo;
     private EstadoDetencao estadoDetencao;
-    private LocalDateTime dataDetencao;
+    private LocalDate dataDetencao;
     private String localDetencao;
     private String motivoDetencao;
     private String observacoes;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 }
-

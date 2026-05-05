@@ -2,6 +2,7 @@ package ao.gov.sic.sip.controllers;
 
 import ao.gov.sic.sip.dtos.InstrutorDTO;
 import ao.gov.sic.sip.dtos.InstrutorDetailDTO;
+import ao.gov.sic.sip.dtos.InstrutorItemDTO;
 import ao.gov.sic.sip.dtos.Response;
 import ao.gov.sic.sip.services.InstrutorService;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +25,8 @@ public class InstrutorController {
     private final InstrutorService instrutorService;
 
     @GetMapping(INSTRUTOR_PATH)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
-    public ResponseEntity<Response<List<InstrutorDTO>>> getAllInstrutores() {
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA', 'SECRETARIA_GERAL')")
+    public ResponseEntity<Response<List<InstrutorItemDTO>>> getAllInstrutores() {
         return ResponseEntity.ok(instrutorService.getAll());
     }
 

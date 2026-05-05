@@ -42,6 +42,7 @@ public class ProcessoServiceImpl implements ProcessoService {
     private final ObjectMapper mapper;
     private final DirecaoService direcaoService;
     private final DirecaoRepository direcaoRepository;
+    private final DirectorRepository directorRepository;
 
     @Override
     public Response<ProcessoDetailDTO> getById(Long id) {
@@ -273,6 +274,8 @@ public class ProcessoServiceImpl implements ProcessoService {
         boolean isInstrutor = user.getRoles().stream().anyMatch(role -> role.getName().equals("INSTRUTOR"));
         boolean isSecretaria = user.getRoles().stream().anyMatch(role -> role.getName().equals("SECRETARIA"));
         boolean isSecretariaGeral = user.getRoles().stream().anyMatch(role -> role.getName().equals("SECRETARIA_GERAL"));
+        boolean isPgr = user.getRoles().stream().anyMatch(role -> role.getName().equals("PGR"));
+        boolean isDirector = user.getRoles().stream().anyMatch(role -> role.getName().equals("DIRECTOR"));
 
 
 
@@ -310,6 +313,22 @@ public class ProcessoServiceImpl implements ProcessoService {
         } else if (isSecretariaGeral) {
             processos = processoRepository.findAll(spec)
                     .stream()
+                    .map(processoMapper::processoToProcessoResDTO)
+                    .toList();
+        } else if (isPgr) {
+            processos = processoRepository.findAll(spec)
+                    .stream()
+                    .map(processoMapper::processoToProcessoResDTO)
+                    .toList();
+        } else if (isDirector) {
+            Optional<Director> director = directorRepository.findAll().stream()
+                    .filter(d -> d.getUser().getId().equals(user.getId()))
+                    .findFirst();
+
+            processos = processoRepository.findAll(spec)
+                    .stream()
+                    .filter(d -> d.getDirecao() != null &&
+                                     d.getDirecao().getId().equals(director.get().getDirecao().getId()))
                     .map(processoMapper::processoToProcessoResDTO)
                     .toList();
         }

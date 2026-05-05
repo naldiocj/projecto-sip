@@ -71,24 +71,24 @@ public class AuthServiceImpl implements AuthService {
         User user = userRepository.save(userToSave);
 
 
-        if (role.getName().equals(INSTRUTOR)) {
-            instrutorRepository.save(Instrutor.builder()
-                    .nomeCompleto(userToSave.getName())
-                    .user(userToSave)
-                    .build());
-        } else if (role.getName().equals(SECRETARIA)) {
-            secretariaRepository.save(Secretaria.builder()
-                    .nomeCompleto(userToSave.getName())
-                    .user(userToSave)
-                    .type(SecretariaType.ORGAO)
-                    .build());
-        } else if (role.getName().equals(SECRETARIA_GERAL)) {
-            secretariaRepository.save(Secretaria.builder()
-                    .nomeCompleto(userToSave.getName())
-                    .user(userToSave)
-                    .type(SecretariaType.GERAL)
-                    .build());
-        }
+//        if (role.getName().equals(INSTRUTOR)) {
+//            instrutorRepository.save(Instrutor.builder()
+//                    .nomeCompleto(userToSave.getName())
+//                    .user(userToSave)
+//                    .build());
+//        } else if (role.getName().equals(SECRETARIA)) {
+//            secretariaRepository.save(Secretaria.builder()
+//                    .nomeCompleto(userToSave.getName())
+//                    .user(userToSave)
+//                    .type(SecretariaType.ORGAO)
+//                    .build());
+//        } else if (role.getName().equals(SECRETARIA_GERAL)) {
+//            secretariaRepository.save(Secretaria.builder()
+//                    .nomeCompleto(userToSave.getName())
+//                    .user(userToSave)
+//                    .type(SecretariaType.GERAL)
+//                    .build());
+//        }
 
         // TODO other here
 

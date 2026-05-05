@@ -22,7 +22,7 @@ public class DirecaoController {
     private final DirecaoService direcaoService;
 
     @GetMapping(PATENT_PATH)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA', 'SECRETARIA_GERAL')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PGR', 'SECRETARIA', 'SECRETARIA_GERAL', 'PIQUETE')")
     public ResponseEntity<Response<List<DirecaoDTO>>> getAllDirecoes() {
         return ResponseEntity.ok(direcaoService.getAllDirecoes());
     }

@@ -20,25 +20,25 @@ public class UserController {
     private final UserService userService;
 
     @PutMapping(USER_PATH)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PGR', 'SECRETARIA', 'SECRETARIA_GERAL')")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<Response<?>> updateMyAccount(@RequestBody UserDTO userDTO) {
         return ResponseEntity.ok(userService.updateMyAccount(userDTO));
     }
 
     @DeleteMapping(USER_PATH_ID)
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<Response<?>> deleteUser(@PathVariable("userId") Long userId) {
         return ResponseEntity.ok(userService.deleteUser(userId));
     }
 
     @GetMapping(USER_PATH)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PGR', 'SECRETARIA', 'SECRETARIA_GERAL')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PGR', 'SECRETARIA', 'SECRETARIA_GERAL', 'PIQUETE')")
     public ResponseEntity<Response<List<UserDTO>>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
     @GetMapping(USER_PATH_ME)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PGR', 'SECRETARIA', 'SECRETARIA_GERAL')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PGR', 'SECRETARIA', 'SECRETARIA_GERAL', 'PIQUETE')")
     public ResponseEntity<Response<UserDTO>> getAccountDetails() {
         return ResponseEntity.ok(userService.getAccountDetails());
     }

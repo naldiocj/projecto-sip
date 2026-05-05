@@ -1,5 +1,6 @@
 package ao.gov.sic.sip.controllers;
 
+import ao.gov.sic.sip.dtos.CreateDetidoDTO;
 import ao.gov.sic.sip.dtos.DetidoDTO;
 import ao.gov.sic.sip.dtos.Response;
 import ao.gov.sic.sip.services.DetidoService;
@@ -18,7 +19,7 @@ public class DetidoController {
     private final DetidoService detidoService;
 
     @PostMapping
-    public ResponseEntity<Response<?>> create(@RequestBody DetidoDTO dto) {
+    public ResponseEntity<Response<?>> create(@RequestBody CreateDetidoDTO dto) {
         return new ResponseEntity<>(detidoService.create(dto), HttpStatus.CREATED);
     }
 

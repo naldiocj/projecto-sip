@@ -21,7 +21,7 @@ public class ArguidoController {
     private final ArguidoService arguidoService;
 
     @GetMapping(ARGUIDO_PATH)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PGR', 'SECRETARIA', 'SECRETARIA_GERAL')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PGR', 'SECRETARIA', 'SECRETARIA_GERAL', 'PIQUETE')")
     public ResponseEntity<Response<List<ArguidoDTO>>> getAllArguidos() {
         return ResponseEntity.ok(arguidoService.getAll());
     }

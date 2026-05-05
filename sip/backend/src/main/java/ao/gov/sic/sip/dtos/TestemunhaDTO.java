@@ -31,4 +31,5 @@ public class TestemunhaDTO {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long userId;
     private Long processoId;
+    private String processoNumero;
 }

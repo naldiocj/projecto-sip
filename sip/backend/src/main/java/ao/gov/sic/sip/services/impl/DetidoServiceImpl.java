@@ -1,5 +1,6 @@
 package ao.gov.sic.sip.services.impl;
 
+import ao.gov.sic.sip.dtos.CreateDetidoDTO;
 import ao.gov.sic.sip.dtos.DetidoDTO;
 import ao.gov.sic.sip.dtos.Response;
 import ao.gov.sic.sip.entities.Detido;
@@ -24,8 +25,15 @@ public class DetidoServiceImpl implements DetidoService {
 
     @Override
     @Transactional
-    public Response<DetidoDTO> create(DetidoDTO dto) {
+    public Response<DetidoDTO> create(CreateDetidoDTO dto) {
         Detido detido = detidoMapper.toEntity(dto);
+
+        detido.setNumeroProcesso("--");
+
+       if (dto.getDataNascimento() != null) {
+           detido.setIdade(dto.getDataNascimento().until(dto.getDataDetencao()).getYears());
+       }
+
         detido = detidoRepository.save(detido);
         
         return Response.<DetidoDTO>builder()

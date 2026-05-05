@@ -21,7 +21,7 @@ public class AdvogadoController {
     private final AdvogadoService advogadoService;
 
     @GetMapping(ADVOGADO_PATH)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PGR', 'SECRETARIA', 'SECRETARIA_GERAL')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PGR', 'SECRETARIA', 'SECRETARIA_GERAL', 'PIQUETE')")
     public ResponseEntity<Response<List<AdvogadoDTO>>> getAllAdvogados() {
         return ResponseEntity.ok(advogadoService.getAll());
     }

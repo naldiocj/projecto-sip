@@ -1,8 +1,6 @@
 package ao.gov.sic.sip.services.impl;
 
-import ao.gov.sic.sip.dtos.InstrutorDTO;
-import ao.gov.sic.sip.dtos.InstrutorDetailDTO;
-import ao.gov.sic.sip.dtos.Response;
+import ao.gov.sic.sip.dtos.*;
 import ao.gov.sic.sip.entities.*;
 import ao.gov.sic.sip.exceptions.NotFoundException;
 import ao.gov.sic.sip.mappers.DirecaoMapper;
@@ -13,14 +11,18 @@ import ao.gov.sic.sip.repositories.*;
 import ao.gov.sic.sip.services.InstrutorCSVService;
 import ao.gov.sic.sip.services.InstrutorService;
 import ao.gov.sic.sip.services.StorageFileService;
+import ao.gov.sic.sip.services.UserService;
+import ao.gov.sic.sip.utils.ProcessoSpecifications;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -37,6 +39,8 @@ public class InstrutorServiceImpl implements InstrutorService {
     private final InstrutorCSVService instrutorCSVService;
     private final StorageFileService storageFileService;
     private final DirecaoMapper direcaoMapper;
+    private final UserService userService;
+    private final SecretariaRepository secretariaRepository;
 
     @Override
     public Response<InstrutorDTO> getById(Long id) {
@@ -185,12 +189,46 @@ public class InstrutorServiceImpl implements InstrutorService {
     }
 
     @Override
-    public Response<List<InstrutorDTO>> getAll() {
-        List<InstrutorDTO> instrutores = instrutorRepository.findAll()
-                .stream().map(instrutorMapper::instrutorToInstrutorDTO)
-                .toList();
+    public Response<List<InstrutorItemDTO>> getAll() {
+        User user = userService.currentUser();
 
-        return Response.<List<InstrutorDTO>>builder()
+        // 1. Build the specification based on the term
+        //Specification<Processo> spec = ProcessoSpecifications.hasTerm(term);
+
+        // 2. Fetch filtered results directly from DB
+        List<InstrutorItemDTO> instrutores = new ArrayList<>();
+
+        boolean isAdmin = user.getRoles().stream().anyMatch(role -> role.getName().equals("ADMIN"));
+        boolean isSecretaria = user.getRoles().stream().anyMatch(role -> role.getName().equals("SECRETARIA"));
+        boolean isSecretariaGeral = user.getRoles().stream().anyMatch(role -> role.getName().equals("SECRETARIA_GERAL"));
+        boolean isDirector = user.getRoles().stream().anyMatch(role -> role.getName().equals("DIRECTOR"));
+
+
+        if (isSecretariaGeral) {
+            instrutores = instrutorRepository.findAll()
+                    .stream()
+                    .map(instrutorMapper::instrutorToInstrutorItemDTO)
+                    .toList();
+        } else if (isSecretaria || isDirector) {
+            Secretaria secretaria = secretariaRepository.findAll().stream()
+                    .filter(s ->
+                            s.getUser().getId().equals(user.getId()))
+                    .findFirst()
+                    .orElseThrow(() -> new NotFoundException("Secretaria não encontrada"));
+
+            instrutores = instrutorRepository.findAll()
+                    .stream()
+                    .filter(i -> i.getDirecao().getId().equals(secretaria.getDirecao().getId()))
+                    .map(instrutorMapper::instrutorToInstrutorItemDTO)
+                    .toList();
+        } else if (isAdmin) {
+            instrutores = instrutorRepository.findAll()
+                    .stream().map(instrutorMapper::instrutorToInstrutorItemDTO)
+                    .toList();
+        }
+
+
+        return Response.<List<InstrutorItemDTO>>builder()
                 .statusCode(HttpStatus.OK.value())
                 .message(instrutores.isEmpty() ? "Nenhum instrutor encontrado" : "Instrutores encontrados com sucesso")
                 .data(instrutores)

@@ -127,7 +127,7 @@ public class UserServiceImpl implements UserService {
                     .findFirst();
 
             Optional<DirecaoDTO> direcaoDTO = direcaoRepository.findAll().stream()
-                    .filter(d -> d.getId().equals(secretaria.get().getDirecao().getId()))
+                    .filter(d -> secretaria.isPresent() && d.getId().equals(secretaria.get().getDirecao().getId()))
                     .map(direcaoMapper::direcaoToDirecaoDTO)
                     .findFirst();
 

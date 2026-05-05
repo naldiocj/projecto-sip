@@ -45,10 +45,17 @@ public class TestemunhaServiceImpl implements TestemunhaService {
 
     @Override
     public Response<?> create(TestemunhaDTO dto) {
-        Testemunha founded = testemunhaRepository.findByNomeCompleto(dto.getNomeCompleto());
-        if (founded != null) {
-            throw new RuntimeException("Testemunha já existe");
+        Processo processo = processoRepository.findFirstByNumero(dto.getProcessoNumero());
+
+        if (processo == null) {
+            throw new NotFoundException("Processo não encontrado");
         }
+
+        testemunhaRepository.findAll().stream()
+                .filter(t -> t.getNomeCompleto().equals(dto.getNomeCompleto()) && t.getNumeroBi().equals(dto.getNumeroBi()))
+                .findFirst().ifPresent(t -> {
+                    throw new RuntimeException("Testemunha já existe");
+                });
 
         Testemunha testemunha = testemunhaMapper.testemunhaDTOToTestemunha(dto);
 
@@ -71,8 +78,7 @@ public class TestemunhaServiceImpl implements TestemunhaService {
 
         Testemunha savedTestemunha = testemunhaRepository.save(testemunha);
 
-        Processo processo = processoRepository.findById(dto.getProcessoId())
-                .orElseThrow(()-> new NotFoundException("Processo não encontrado"));
+
 
         participanteRepository.save(Participante.builder()
                 .advogado(null)

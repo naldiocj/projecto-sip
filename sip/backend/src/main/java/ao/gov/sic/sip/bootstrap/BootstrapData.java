@@ -18,6 +18,8 @@ public class BootstrapData implements CommandLineRunner {
     private final Direcoes direcoes;
     private final Instrutores instrutores;
     private final Secretarias secretarias;
+    private final Directores directores;
+    private final Processos processos;
 
     @Override
     public void run(String... args) throws Exception {
@@ -30,5 +32,7 @@ public class BootstrapData implements CommandLineRunner {
         direcoes.loadData();
         instrutores.loadData();
         secretarias.loadData();
+        directores.loadData();
+        processos.loadData();
     }
 }

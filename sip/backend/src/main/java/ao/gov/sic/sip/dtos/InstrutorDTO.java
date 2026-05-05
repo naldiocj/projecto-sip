@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -14,6 +16,7 @@ public class InstrutorDTO {
     private Long id;
     private String nomeCompleto;
     private Long patenteId;
+    private String patente;
     private Long cargoId;
     private Long direcaoId;
     private DirecaoDTO direcao;
@@ -21,3 +24,4 @@ public class InstrutorDTO {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long userId;
 }
+

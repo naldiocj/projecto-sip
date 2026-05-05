@@ -20,7 +20,7 @@ public class DirectorController {
     private final DirectorService directorService;
 
     @GetMapping(DIRECTOR_PATH)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PGR', 'SECRETARIA', 'SECRETARIA_GERAL', 'PIQUETE')")
     public ResponseEntity<Response<List<DirectorDTO>>> getAllDirectores() {
         return ResponseEntity.ok(directorService.getAll());
     }

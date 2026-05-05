@@ -4,6 +4,7 @@ import ao.gov.sic.sip.controllers.AuthController;
 import ao.gov.sic.sip.dtos.RegistrationRequest;
 import ao.gov.sic.sip.dtos.Response;
 import ao.gov.sic.sip.entities.*;
+import ao.gov.sic.sip.enums.AuthMethod;
 import ao.gov.sic.sip.repositories.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -37,33 +38,6 @@ public class RolesAndUsers {
             admin.setRoleName(ADMIN);
             authController.register(admin);
 
-            RegistrationRequest director = new RegistrationRequest();
-            director.setName("Director");
-            director.setEmail("director@sic.gov.ao");
-            director.setPassword("123456");
-            director.setPhoneNumber("-");
-            director.setRoleName(DIRECTOR);
-            authController.register(director);
-
-            RegistrationRequest instrutor = new RegistrationRequest();
-            instrutor.setName("Instrutor");
-            instrutor.setEmail("instrutor1@sic.gov.ao");
-            instrutor.setPassword("123456");
-            instrutor.setPhoneNumber("-");
-            instrutor.setRoleName(INSTRUTOR);
-            authController.register(instrutor);
-
-
-
-            RegistrationRequest instrutor1 = new RegistrationRequest();
-            instrutor1.setName("Instrutor");
-            instrutor1.setEmail("instrutor@sic.gov.ao");
-            instrutor1.setPassword("123456");
-            instrutor1.setPhoneNumber("-");
-            instrutor1.setRoleName(INSTRUTOR);
-            authController.register(instrutor1);
-
-
 
             RegistrationRequest piquete = new RegistrationRequest();
             piquete.setName("PIQUETE");
@@ -81,14 +55,6 @@ public class RolesAndUsers {
             pgr.setRoleName(PGR);
             authController.register(pgr);
 
-            RegistrationRequest secretaria = new RegistrationRequest();
-            secretaria.setName("SECRETARIA");
-            secretaria.setEmail("secretaria@sic.gov.ao");
-            secretaria.setPassword("123456");
-            secretaria.setPhoneNumber("-");
-            secretaria.setRoleName(SECRETARIA);
-            authController.register(secretaria);
-
             RegistrationRequest secretariaGeral = new RegistrationRequest();
             secretariaGeral.setName("SECRETARIA GERAL");
             secretariaGeral.setEmail("secretaria.geral@sic.gov.ao");
@@ -97,13 +63,105 @@ public class RolesAndUsers {
             secretariaGeral.setRoleName(SECRETARIA_GERAL);
             authController.register(secretariaGeral);
 
-            RegistrationRequest secretaria1 = new RegistrationRequest();
-            secretaria1.setName("SECRETARIA 1");
-            secretaria1.setEmail("secretaria1@sic.gov.ao");
-            secretaria1.setPassword("123456");
-            secretaria1.setPhoneNumber("-");
-            secretaria1.setRoleName(SECRETARIA);
-            authController.register(secretaria1);
+            // news
+            RegistrationRequest director1 = new RegistrationRequest();
+            director1.setName("Paulo Ambrosio");
+            director1.setEmail("director.dcn@sic.gov.ao");
+            director1.setPassword("123456");
+            director1.setPhoneNumber("-");
+            director1.setRoleName(DIRECTOR);
+            authController.register(director1);
+
+            RegistrationRequest director2 = new RegistrationRequest();
+            director2.setName("Teresa Catate");
+            director2.setEmail("directora.rh@sic.gov.ao");
+            director2.setPassword("123456");
+            director2.setPhoneNumber("-");
+            director2.setRoleName(DIRECTOR);
+            authController.register(director2);
+
+            RegistrationRequest director3 = new RegistrationRequest();
+            director3.setName("Edilson Quibelo");
+            director3.setEmail("director.dtti@sic.gov.ao");
+            director3.setPassword("123456");
+            director3.setPhoneNumber("-");
+            director3.setRoleName(DIRECTOR);
+            authController.register(director3);
+
+            RegistrationRequest secretaria21= new RegistrationRequest();
+            secretaria21.setName("SECRETARIA RH");
+            secretaria21.setEmail("secretaria.rh@sic.gov.ao");
+            secretaria21.setPassword("123456");
+            secretaria21.setPhoneNumber("-");
+            secretaria21.setRoleName(SECRETARIA);
+            authController.register(secretaria21);
+
+            RegistrationRequest secretaria31= new RegistrationRequest();
+            secretaria31.setName("SECRETARIA DCN");
+            secretaria31.setEmail("secretaria.dcn@sic.gov.ao");
+            secretaria31.setPassword("123456");
+            secretaria31.setPhoneNumber("-");
+            secretaria31.setRoleName(SECRETARIA);
+            authController.register(secretaria31);
+
+            RegistrationRequest secretaria41= new RegistrationRequest();
+            secretaria41.setName("SECRETARIA DTTI");
+            secretaria41.setEmail("secretaria.dtti@sic.gov.ao");
+            secretaria41.setPassword("123456");
+            secretaria41.setPhoneNumber("-");
+            secretaria41.setRoleName(SECRETARIA);
+            authController.register(secretaria41);
+
+            // RH
+            RegistrationRequest instrutor1 = new RegistrationRequest();
+            instrutor1.setName("Marques Malanga");
+            instrutor1.setEmail("instrutor.rh1@sic.gov.ao");
+            instrutor1.setPassword("123456");
+            instrutor1.setPhoneNumber("-");
+            instrutor1.setRoleName(INSTRUTOR);
+            authController.register(instrutor1);
+
+            RegistrationRequest instrutor2 = new RegistrationRequest();
+            instrutor2.setName("José Martins");
+            instrutor2.setEmail("instrutor.rh2@sic.gov.ao");
+            instrutor2.setPassword("123456");
+            instrutor2.setPhoneNumber("-");
+            instrutor2.setRoleName(INSTRUTOR);
+            authController.register(instrutor2);
+
+            // DTTI
+            RegistrationRequest instrutor3 = new RegistrationRequest();
+            instrutor3.setName("Paulo dos Santos");
+            instrutor3.setEmail("instrutor.dtti1@sic.gov.ao");
+            instrutor3.setPassword("123456");
+            instrutor3.setPhoneNumber("-");
+            instrutor3.setRoleName(INSTRUTOR);
+            authController.register(instrutor3);
+
+            RegistrationRequest instrutor4 = new RegistrationRequest();
+            instrutor4.setName("Tavares Carlos");
+            instrutor4.setEmail("instrutor.dtti2@sic.gov.ao");
+            instrutor4.setPassword("123456");
+            instrutor4.setPhoneNumber("-");
+            instrutor4.setRoleName(INSTRUTOR);
+            authController.register(instrutor4);
+
+            // DCN
+            RegistrationRequest instrutor5 = new RegistrationRequest();
+            instrutor5.setName("Carlos Inâcio");
+            instrutor5.setEmail("instrutor.dcn1@sic.gov.ao");
+            instrutor5.setPassword("123456");
+            instrutor5.setPhoneNumber("-");
+            instrutor5.setRoleName(INSTRUTOR);
+            authController.register(instrutor5);
+
+            RegistrationRequest instrutor6 = new RegistrationRequest();
+            instrutor6.setName("Mendes Lulas");
+            instrutor6.setEmail("instrutor.dcn2@sic.gov.ao");
+            instrutor6.setPassword("123456");
+            instrutor6.setPhoneNumber("-");
+            instrutor6.setRoleName(INSTRUTOR);
+            authController.register(instrutor6);
         }
     }
 

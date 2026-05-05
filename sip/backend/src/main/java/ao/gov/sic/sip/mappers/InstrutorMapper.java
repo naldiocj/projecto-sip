@@ -1,11 +1,12 @@
 package ao.gov.sic.sip.mappers;
 
 import ao.gov.sic.sip.dtos.InstrutorDTO;
+import ao.gov.sic.sip.dtos.InstrutorItemDTO;
 import ao.gov.sic.sip.entities.Instrutor;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(uses = {DirecaoMapper.class})
+@Mapper(uses = {DirecaoMapper.class, PatenteMapper.class, CargoMapper.class})
 public interface InstrutorMapper {
     @Mapping(source = "patenteId", target = "patente.id")
     @Mapping(source = "cargoId", target = "cargo.id")
@@ -17,5 +18,13 @@ public interface InstrutorMapper {
     @Mapping(source = "cargo.id", target = "cargoId")
     @Mapping(source = "direcao.id", target = "direcaoId")
     @Mapping(source = "user.id", target = "userId")
+    @Mapping(source = "patente.nome", target = "patente")
     InstrutorDTO instrutorToInstrutorDTO(Instrutor entity);
+
+    @Mapping(source = "patente.id", target = "patenteId")
+    @Mapping(source = "cargo.id", target = "cargoId")
+    @Mapping(source = "direcao.id", target = "direcaoId")
+    @Mapping(source = "user.id", target = "userId")
+    @Mapping(source = "patente.nome", target = "patente")
+    InstrutorItemDTO instrutorToInstrutorItemDTO(Instrutor entity);
 }

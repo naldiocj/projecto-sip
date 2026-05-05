@@ -20,7 +20,7 @@ public class TestemunhaController {
     private final TestemunhaService testemunhaService;
 
     @GetMapping(TESTEMUNHA_PATH)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PGR', 'SECRETARIA', 'SECRETARIA_GERAL')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PGR', 'SECRETARIA', 'SECRETARIA_GERAL', 'PIQUETE')")
     public ResponseEntity<Response<List<TestemunhaDTO>>> getAllTestemunhas() {
         return ResponseEntity.ok(testemunhaService.getAll());
     }
@@ -32,13 +32,13 @@ public class TestemunhaController {
     }
 
     @PostMapping(TESTEMUNHA_PATH)
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'INSTRUTOR')")
     public ResponseEntity<?> createTestemunha(@Validated @RequestBody TestemunhaDTO dto) {
         return ResponseEntity.ok(testemunhaService.create(dto));
     }
 
     @PostMapping(TESTEMUNHA_PATH_ID)
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'INSTRUTOR')")
     public ResponseEntity<?> updateTestemunhaById(@RequestBody TestemunhaDTO dto, @PathVariable("testemunhaId") Long testemunhaId) {
         return ResponseEntity.ok(testemunhaService.updateById(dto, testemunhaId));
     }

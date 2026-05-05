@@ -21,7 +21,7 @@ public class QueixosoController {
     private final QueixosoService queixosoService;
 
     @GetMapping(QUEIXOSO_PATH)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PGR', 'SECRETARIA', 'SECRETARIA_GERAL')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PGR', 'SECRETARIA', 'SECRETARIA_GERAL', 'PIQUETE')")
     public ResponseEntity<Response<List<QueixosoDTO>>> getAllQueixosos() {
         return ResponseEntity.ok(queixosoService.getAll());
     }

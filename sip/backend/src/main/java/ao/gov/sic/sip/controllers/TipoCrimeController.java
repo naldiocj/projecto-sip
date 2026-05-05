@@ -22,7 +22,7 @@ public class TipoCrimeController {
     private final TipoCrimeService tipoCrimeService;
 
     @GetMapping(TIPO_CRIME_PATH)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PGR', 'SECRETARIA', 'SECRETARIA_GERAL')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PGR', 'SECRETARIA', 'SECRETARIA_GERAL', 'PIQUETE')")
     public ResponseEntity<Response<List<TipoCrimeDTO>>> getAllTiposCrimes() {
         return ResponseEntity.ok(tipoCrimeService.getAll());
     }

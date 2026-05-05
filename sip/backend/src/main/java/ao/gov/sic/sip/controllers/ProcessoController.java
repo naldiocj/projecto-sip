@@ -21,7 +21,7 @@ public class ProcessoController {
     private final ProcessoService processoService;
 
     @GetMapping
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PGR', 'SECRETARIA', 'SECRETARIA_GERAL')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PGR', 'SECRETARIA', 'SECRETARIA_GERAL', 'PIQUETE')")
     public ResponseEntity<Response<List<ProcessoResDTO>>> getAllProcessos(
             @RequestParam(name = "term", required = false) String term) {
         Response<List<ProcessoResDTO>> response = processoService.getAll(term);
@@ -29,7 +29,7 @@ public class ProcessoController {
     }
 
     @GetMapping("/{processoNumero}")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PGR', 'SECRETARIA', 'SECRETARIA_GERAL')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PGR', 'SECRETARIA', 'SECRETARIA_GERAL', 'PIQUETE')")
     public ResponseEntity<Response<?>> getProcessoByNumero(
             @PathVariable("processoNumero") String processoNumero) {
         Response<?> response = processoService.getByNumero(processoNumero);

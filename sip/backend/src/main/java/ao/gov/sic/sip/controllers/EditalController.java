@@ -20,7 +20,7 @@ public class EditalController {
     private final EditalService editalService;
 
     @GetMapping(EDITAL_PATH)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PIQUETE', 'PGR', 'SECRETARIA')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'DIRECTOR', 'INSTRUTOR', 'PGR', 'SECRETARIA', 'SECRETARIA_GERAL', 'PIQUETE')")
     public ResponseEntity<Response<List<EditalDTO>>> getAllEditais() {
         return ResponseEntity.ok(editalService.getAll());
     }
