@@ -45,6 +45,7 @@ public interface ProcessoMapper {
     @Mapping(source = "estadoProcesso", target = "estadoProcesso")
     ProcessoResDTO processoToProcessoResDTO(Processo entity);
 
+
     default Set<Long> mapCrimesToIds(Set<TipoCrime> crimes) {
         if (crimes == null) {
             return null;

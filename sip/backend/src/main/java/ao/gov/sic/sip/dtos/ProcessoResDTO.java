@@ -33,3 +33,4 @@ public class ProcessoResDTO {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }
+

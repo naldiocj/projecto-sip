@@ -8,6 +8,7 @@ import ao.gov.sic.sip.exceptions.BadRequestException;
 import ao.gov.sic.sip.exceptions.NotFoundException;
 import ao.gov.sic.sip.mappers.ArguidoMapper;
 import ao.gov.sic.sip.repositories.*;
+import ao.gov.sic.sip.services.ArguidoAccessService;
 import ao.gov.sic.sip.services.ArguidoService;
 import ao.gov.sic.sip.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,7 @@ public class ArguidoServiceImpl implements ArguidoService {
     private final ProcessoRepository processoRepository;
     private final ParticipanteRepository participanteRepository;
     private final UserService userService;
+    private final ArguidoAccessService arguidoAccessService;
 
     @Override
     public Response<ArguidoDTO> getById(Long id) {
@@ -193,9 +195,7 @@ public class ArguidoServiceImpl implements ArguidoService {
 
     @Override
     public Response<List<ArguidoDTO>> getAll() {
-        List<ArguidoDTO> arguidos = arguidoRepository.findAll()
-                .stream().map(arguidoMapper::arguidoToArguidoDTO)
-                .toList();
+        List<ArguidoDTO> arguidos = arguidoAccessService.getFilteredArguidos();
 
         return Response.<List<ArguidoDTO>>builder()
                 .statusCode(HttpStatus.OK.value())

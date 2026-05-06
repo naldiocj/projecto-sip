@@ -8,6 +8,7 @@ import ao.gov.sic.sip.exceptions.BadRequestException;
 import ao.gov.sic.sip.exceptions.NotFoundException;
 import ao.gov.sic.sip.mappers.QueixosoMapper;
 import ao.gov.sic.sip.repositories.*;
+import ao.gov.sic.sip.services.QueixosoAccessService;
 import ao.gov.sic.sip.services.QueixosoService;
 import ao.gov.sic.sip.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,7 @@ public class QueixosoServiceImpl implements QueixosoService {
     private final UserService userService;
     private final ParticipanteRepository participanteRepository;
     private final ProcessoRepository processoRepository;
+    private final QueixosoAccessService queixosoAccessService;
 
     @Override
     public Response<QueixosoDTO> getById(Long id) {
@@ -195,9 +197,8 @@ public class QueixosoServiceImpl implements QueixosoService {
 
     @Override
     public Response<List<QueixosoDTO>> getAll() {
-        List<QueixosoDTO> queixosos = queixosoRepository.findAll()
-                .stream().map(queixosoMapper::queixosoToQueixosoDTO)
-                .toList();
+        List<QueixosoDTO> queixosos = queixosoAccessService.getFilteredQueixosos();
+
 
         return Response.<List<QueixosoDTO>>builder()
                 .statusCode(HttpStatus.OK.value())

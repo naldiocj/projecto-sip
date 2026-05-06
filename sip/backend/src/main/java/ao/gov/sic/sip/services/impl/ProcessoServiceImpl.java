@@ -7,6 +7,7 @@ import ao.gov.sic.sip.exceptions.NotFoundException;
 import ao.gov.sic.sip.mappers.ProcessoMapper;
 import ao.gov.sic.sip.repositories.*;
 import ao.gov.sic.sip.services.DirecaoService;
+import ao.gov.sic.sip.services.ProcessoAccessService;
 import ao.gov.sic.sip.services.ProcessoService;
 import ao.gov.sic.sip.services.UserService;
 import ao.gov.sic.sip.utils.ProcessoSpecifications;
@@ -43,6 +44,7 @@ public class ProcessoServiceImpl implements ProcessoService {
     private final DirecaoService direcaoService;
     private final DirecaoRepository direcaoRepository;
     private final DirectorRepository directorRepository;
+    private final ProcessoAccessService processoAccessService;
 
     @Override
     public Response<ProcessoDetailDTO> getById(Long id) {
@@ -262,83 +264,9 @@ public class ProcessoServiceImpl implements ProcessoService {
     @Override
     public Response<List<ProcessoResDTO>> getAll(String term) {
 
-        User user = userService.currentUser();
-
-        // 1. Build the specification based on the term
         Specification<Processo> spec = ProcessoSpecifications.hasTerm(term);
 
-        // 2. Fetch filtered results directly from DB
-        List<ProcessoResDTO> processos = new ArrayList<>();
-
-        boolean isAdmin = user.getRoles().stream().anyMatch(role -> role.getName().equals("ADMIN"));
-        boolean isInstrutor = user.getRoles().stream().anyMatch(role -> role.getName().equals("INSTRUTOR"));
-        boolean isSecretaria = user.getRoles().stream().anyMatch(role -> role.getName().equals("SECRETARIA"));
-        boolean isSecretariaGeral = user.getRoles().stream().anyMatch(role -> role.getName().equals("SECRETARIA_GERAL"));
-        boolean isPgr = user.getRoles().stream().anyMatch(role -> role.getName().equals("PGR"));
-        boolean isDirector = user.getRoles().stream().anyMatch(role -> role.getName().equals("DIRECTOR"));
-
-
-
-        if (isAdmin) {
-            processos = processoRepository.findAll(spec)
-                    .stream()
-                    .map(processoMapper::processoToProcessoResDTO)
-                    .toList();
-        } else if (isInstrutor) {
-            Instrutor instrutor = instrutorRepository.findAll().stream()
-                    .filter(i -> i.getUser().getId().equals(user.getId())).findFirst()
-                    .orElseThrow(()-> new NotFoundException("Instrutor não encontrado"));
-
-            processos = processoRepository.findAll(spec)
-                    .stream()
-                    .filter(processo -> processo.getInstrutor() != null && processo.getInstrutor().getId().equals(instrutor.getId()))
-                    .map(processoMapper::processoToProcessoResDTO)
-                    .peek(p -> {
-                        if (p.getDirecao() == null) {
-                            p.setDirecao(null);
-                        }
-                    })
-                    .toList();
-        } else if (isSecretaria) {
-            Secretaria secretaria = secretariaRepository.findAll()
-                    .stream()
-                    .filter(s -> s.getUser().getId().equals(user.getId())).findFirst()
-                    .orElseThrow(() -> new NotFoundException("Secretaria não encontrada"));
-
-            processos = processoRepository.findAll(spec)
-                    .stream()
-                    .filter(processo -> processo.getDirecao() != null && processo.getDirecao().getId().equals(secretaria.getDirecao().getId()))
-                    .map(processoMapper::processoToProcessoResDTO)
-                    .toList();
-        } else if (isSecretariaGeral) {
-            processos = processoRepository.findAll(spec)
-                    .stream()
-                    .map(processoMapper::processoToProcessoResDTO)
-                    .toList();
-        } else if (isPgr) {
-            processos = processoRepository.findAll(spec)
-                    .stream()
-                    .map(processoMapper::processoToProcessoResDTO)
-                    .toList();
-        } else if (isDirector) {
-            Optional<Director> director = directorRepository.findAll().stream()
-                    .filter(d -> d.getUser().getId().equals(user.getId()))
-                    .findFirst();
-
-            processos = processoRepository.findAll(spec)
-                    .stream()
-                    .filter(d -> d.getDirecao() != null &&
-                                     d.getDirecao().getId().equals(director.get().getDirecao().getId()))
-                    .map(processoMapper::processoToProcessoResDTO)
-                    .toList();
-        }
-        else {
-            processos = processoRepository.findAll(spec)
-                    .stream()
-                    .filter(processo -> processo.getUser().getId().equals(user.getId()))
-                    .map(processoMapper::processoToProcessoResDTO)
-                    .toList();
-        }
+        List<ProcessoResDTO> processos = processoAccessService.getFilteredProcessos(spec);
 
         return Response.<List<ProcessoResDTO>>builder()
                 .statusCode(HttpStatus.OK.value())

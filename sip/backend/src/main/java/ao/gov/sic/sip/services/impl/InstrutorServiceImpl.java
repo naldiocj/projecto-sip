@@ -41,6 +41,7 @@ public class InstrutorServiceImpl implements InstrutorService {
     private final DirecaoMapper direcaoMapper;
     private final UserService userService;
     private final SecretariaRepository secretariaRepository;
+    private final DirectorRepository directorRepository;
 
     @Override
     public Response<InstrutorDTO> getById(Long id) {
@@ -209,7 +210,7 @@ public class InstrutorServiceImpl implements InstrutorService {
                     .stream()
                     .map(instrutorMapper::instrutorToInstrutorItemDTO)
                     .toList();
-        } else if (isSecretaria || isDirector) {
+        } else if (isSecretaria) {
             Secretaria secretaria = secretariaRepository.findAll().stream()
                     .filter(s ->
                             s.getUser().getId().equals(user.getId()))
@@ -219,6 +220,18 @@ public class InstrutorServiceImpl implements InstrutorService {
             instrutores = instrutorRepository.findAll()
                     .stream()
                     .filter(i -> i.getDirecao().getId().equals(secretaria.getDirecao().getId()))
+                    .map(instrutorMapper::instrutorToInstrutorItemDTO)
+                    .toList();
+        } else if (isDirector) {
+            Director director = directorRepository.findAll().stream()
+                    .filter(s ->
+                            s.getUser().getId().equals(user.getId()))
+                    .findFirst()
+                    .orElseThrow(() -> new NotFoundException("Secretaria não encontrada"));
+
+            instrutores = instrutorRepository.findAll()
+                    .stream()
+                    .filter(i -> i.getDirecao().getId().equals(director.getDirecao().getId()))
                     .map(instrutorMapper::instrutorToInstrutorItemDTO)
                     .toList();
         } else if (isAdmin) {
