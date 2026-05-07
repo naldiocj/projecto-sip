@@ -12,6 +12,7 @@ public interface AdvogadoMapper {
     Advogado advogadoDTOToAdvogado(AdvogadoDTO dto);
 
     @Mapping(source = "processo.id", target = "processoId")
+    @Mapping(source = "processo.numero", target = "processoNumero")
     @Mapping(source = "user.id", target = "userId")
     AdvogadoDTO advogadoToAdvogadoDTO(Advogado entity);
 }

@@ -13,6 +13,7 @@ import ao.gov.sic.sip.repositories.AdvogadoRepository;
 import ao.gov.sic.sip.repositories.ParticipanteRepository;
 import ao.gov.sic.sip.repositories.ProcessoRepository;
 import ao.gov.sic.sip.repositories.UserRepository;
+import ao.gov.sic.sip.services.AdvogadoAccessService;
 import ao.gov.sic.sip.services.AdvogadoService;
 import ao.gov.sic.sip.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +34,7 @@ public class AdvogadoServiceImpl implements AdvogadoService {
     private final UserRepository userRepository;
     private final ParticipanteRepository participanteRepository;
     private final UserService userService;
+    private final AdvogadoAccessService advogadoAccessService;
 
     @Override
     public Response<AdvogadoDTO> getById(Long id) {
@@ -159,9 +161,7 @@ public class AdvogadoServiceImpl implements AdvogadoService {
 
     @Override
     public Response<List<AdvogadoDTO>> getAll() {
-        List<AdvogadoDTO> advogados = advogadoRepository.findAll()
-                .stream().map(advogadoMapper::advogadoToAdvogadoDTO)
-                .toList();
+        List<AdvogadoDTO> advogados = advogadoAccessService.getFilteredAdvogados();
 
         return Response.<List<AdvogadoDTO>>builder()
                 .statusCode(HttpStatus.OK.value())

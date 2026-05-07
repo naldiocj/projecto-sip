@@ -34,19 +34,19 @@ public class ParticipacaoController {
     }
 
     @PostMapping(PARTICIPACAO_PATH)
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'PIQUETE')")
     public ResponseEntity<?> createParticipacao(@Validated @RequestBody ParticipacaoDTO dto) {
         return ResponseEntity.ok(participacaoService.create(dto));
     }
 
     @PostMapping(PARTICIPACAO_PATH_ID)
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'PIQUETE')")
     public ResponseEntity<?> updateParticipacaoById(@RequestBody ParticipacaoDTO dto, @PathVariable("participacaoId") Long participacaoId) {
         return ResponseEntity.ok(participacaoService.updateById(dto, participacaoId));
     }
 
     @DeleteMapping(PARTICIPACAO_PATH_ID)
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'PIQUETE')")
     public ResponseEntity<?> deleteParticipacaoById(@PathVariable("participacaoId") Long participacaoId) {
         return ResponseEntity.ok(participacaoService.deleteById(participacaoId));
     }

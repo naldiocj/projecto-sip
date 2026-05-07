@@ -9,6 +9,7 @@ import ao.gov.sic.sip.records.FileRecord;
 import ao.gov.sic.sip.repositories.*;
 import ao.gov.sic.sip.services.ParticipacaoService;
 import ao.gov.sic.sip.services.StorageFileService;
+import ao.gov.sic.sip.services.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,7 @@ public class ParticipacaoServiceImpl implements ParticipacaoService {
     private final ProcessoRepository processoRepository;
     private final UserRepository userRepository;
     private final StorageFileService storageFileService;
+    private final UserService userService;
 
     @Override
     public Response<ParticipacaoDTO> getById(Long id) {
@@ -68,11 +70,16 @@ public class ParticipacaoServiceImpl implements ParticipacaoService {
             Processo processo = processoRepository.findById(dto.getProcessoId())
                     .orElseThrow(() -> new NotFoundException("Processo não encontrado"));
             participacao.setProcesso(processo);
+        } else {
+            participacao.setProcesso(null);
         }
 
         if (dto.getUserId() != null) {
             User user = userRepository.findById(dto.getUserId())
                     .orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
+            participacao.setUser(user);
+        } else {
+            User user = userService.currentUser();
             participacao.setUser(user);
         }
 

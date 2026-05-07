@@ -46,6 +46,10 @@ public class Testemunha {
     private Endereco endereco;
 
     @ManyToOne
+    @JoinColumn(name = "processo_id")
+    private Processo processo;
+
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 

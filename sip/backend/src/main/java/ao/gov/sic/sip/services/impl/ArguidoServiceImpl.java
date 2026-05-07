@@ -55,6 +55,8 @@ public class ArguidoServiceImpl implements ArguidoService {
             throw new NotFoundException("Processo não encontrado");
         }
 
+        dto.setProcessoId(processo.getId());
+
         Arguido arguidoFounded = arguidoRepository.findByNomeCompletoIgnoreCase(dto.getNomeCompleto()); // TODO
 
         AtomicReference<Arguido> arguidoAtomicReference = new AtomicReference<>(arguidoMapper.arguidoDTOToArguido(dto));
@@ -96,6 +98,8 @@ public class ArguidoServiceImpl implements ArguidoService {
                 User user = userService.currentUser();
                 arguidoAtomicReference.get().setUser(user);
             }
+
+            arguidoAtomicReference.get().setProcesso(processo);
 
             Arguido savedArguido = arguidoRepository.save(arguidoAtomicReference.get());
 
@@ -182,6 +186,11 @@ public class ArguidoServiceImpl implements ArguidoService {
                         .orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
                 arguido.setUser(user);
             }
+            if (dto.getProcessoId() != null) {
+                Processo processo = processoRepository.findById(dto.getProcessoId())
+                        .orElseThrow(() -> new NotFoundException("Processo não encontrado"));
+                arguido.setProcesso(processo);
+            }
             arguidoRepository.save(arguido);
         }, () -> {
             throw new NotFoundException("Arguido não encontrado");
@@ -253,6 +262,11 @@ public class ArguidoServiceImpl implements ArguidoService {
             User user = userRepository.findById(dto.getUserId())
                     .orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
             arguido.setUser(user);
+        }
+        if (dto.getProcessoId() != null) {
+            Processo processo = processoRepository.findById(dto.getProcessoId())
+                    .orElseThrow(() -> new NotFoundException("Processo não encontrado"));
+            arguido.setProcesso(processo);
         }
 
         return  arguido;

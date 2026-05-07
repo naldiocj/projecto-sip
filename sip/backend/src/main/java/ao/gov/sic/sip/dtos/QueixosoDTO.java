@@ -1,7 +1,6 @@
 package ao.gov.sic.sip.dtos;
 
 import ao.gov.sic.sip.enums.EstadoCivil;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,8 +27,6 @@ public class QueixosoDTO {
     private String email;
     private String telefone;
     private Long enderecoId;
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-
     private Long processoId;
     private String processoNumero;
 

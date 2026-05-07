@@ -22,4 +22,6 @@ public class RegistrationRequest {
     private String phoneNumber;
     @NotBlank(message = "RoleName is required")
     private String roleName;
+
+    private Long direcaoId;
 }

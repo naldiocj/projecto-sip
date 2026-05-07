@@ -56,6 +56,8 @@ public class QueixosoServiceImpl implements QueixosoService {
             throw new NotFoundException("Processo não encontrado");
         }
 
+        dto.setProcessoId(processo.getId());
+
         Queixoso queixosoFounded = queixosoRepository.findByNomeCompletoIgnoreCase(dto.getNomeCompleto()); // TODO
 
         AtomicReference<Queixoso> queixosoAtomicReference = new AtomicReference<>(queixosoMapper.queixosoDTOToQueixoso(dto));
@@ -95,6 +97,8 @@ public class QueixosoServiceImpl implements QueixosoService {
                 User user = userService.currentUser();
                 queixosoAtomicReference.get().setUser(user);
             }
+
+            queixosoAtomicReference.get().setProcesso(processo);
 
             Queixoso savedQueixoso = queixosoRepository.save(queixosoAtomicReference.get());
 
@@ -167,6 +171,11 @@ public class QueixosoServiceImpl implements QueixosoService {
             User user = userRepository.findById(dto.getUserId())
                     .orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
             queixoso.setUser(user);
+        }
+        if (dto.getProcessoId() != null) {
+            Processo processo = processoRepository.findById(dto.getProcessoId())
+                    .orElseThrow(() -> new NotFoundException("Processo não encontrado"));
+            queixoso.setProcesso(processo);
         }
 
         return  queixoso;

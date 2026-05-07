@@ -40,19 +40,21 @@ public class AuthServiceImpl implements AuthService {
     private final ResourceRepository resourceRepository;
     private final InstrutorRepository instrutorRepository;
     private final SecretariaRepository secretariaRepository;
+    private final DirectorRepository directorRepository;
+    private final DirecaoRepository direcaoRepository;
 
     @Override
-    public Response<?> register(RegistrationRequest registrationRequest) {
+    public Response<?> register(RegistrationRequest dto) {
         log.info("Starting user registration...");
-        if (userRepository.existsByEmail(registrationRequest.getEmail())) {
+        if (userRepository.existsByEmail(dto.getEmail())) {
             throw new BadRequestException("Email exists");
         }
 
         Role role;
 
-        if (registrationRequest.getRoleName() != null
-                && !registrationRequest.getRoleName().isEmpty()) {
-            role = roleRepository.findByName(registrationRequest.getRoleName().toUpperCase())
+        if (dto.getRoleName() != null
+                && !dto.getRoleName().isEmpty()) {
+            role = roleRepository.findByName(dto.getRoleName().toUpperCase())
                     .orElseThrow(() -> new NotFoundException("Role not found"));
         } else {
             role = roleRepository.findByName(INSTRUTOR)
@@ -60,10 +62,10 @@ public class AuthServiceImpl implements AuthService {
         }
 
         User userToSave = new User();
-        userToSave.setName(registrationRequest.getName());
-        userToSave.setEmail(registrationRequest.getEmail());
-        userToSave.setPhoneNumber(registrationRequest.getPhoneNumber());
-        userToSave.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
+        userToSave.setName(dto.getName());
+        userToSave.setEmail(dto.getEmail());
+        userToSave.setPhoneNumber(dto.getPhoneNumber());
+        userToSave.setPassword(passwordEncoder.encode(dto.getPassword()));
         userToSave.setRoles(List.of(role));
         userToSave.setProvider(AuthMethod.LOCAL);
         userToSave.setActive(true);
@@ -71,24 +73,43 @@ public class AuthServiceImpl implements AuthService {
         User user = userRepository.save(userToSave);
 
 
-//        if (role.getName().equals(INSTRUTOR)) {
-//            instrutorRepository.save(Instrutor.builder()
+        Direcao direcao = direcaoRepository.findById(dto.getDirecaoId())
+                .orElseThrow(() -> new NotFoundException("Direcao não encontrada"));
+
+
+        if (role.getName().equals(INSTRUTOR)) {
+            instrutorRepository.save(Instrutor.builder()
+                    .nomeCompleto(userToSave.getName())
+                    .user(userToSave)
+                    .direcao(direcao)
+                    .build());
+        } else if (role.getName().equals(SECRETARIA)) {
+            secretariaRepository.save(Secretaria.builder()
+                    .nomeCompleto(userToSave.getName())
+                    .user(userToSave)
+                    .type(SecretariaType.ORGAO)
+                    .build());
+        } else if (role.getName().equals(SECRETARIA_GERAL)) {
+            secretariaRepository.save(Secretaria.builder()
+                    .nomeCompleto(userToSave.getName())
+                    .user(userToSave)
+                    .direcao(direcao)
+                    .type(SecretariaType.GERAL)
+                    .build());
+        } else if (role.getName().equals(PIQUETE)) {
+//            piquete.save(Secretaria.builder()
 //                    .nomeCompleto(userToSave.getName())
 //                    .user(userToSave)
+//                    .direcao(direcao)
+//                    .type(SecretariaType.P)
 //                    .build());
-//        } else if (role.getName().equals(SECRETARIA)) {
-//            secretariaRepository.save(Secretaria.builder()
-//                    .nomeCompleto(userToSave.getName())
-//                    .user(userToSave)
-//                    .type(SecretariaType.ORGAO)
-//                    .build());
-//        } else if (role.getName().equals(SECRETARIA_GERAL)) {
-//            secretariaRepository.save(Secretaria.builder()
-//                    .nomeCompleto(userToSave.getName())
-//                    .user(userToSave)
-//                    .type(SecretariaType.GERAL)
-//                    .build());
-//        }
+        } else if (role.getName().equals(DIRECTOR)) {
+            directorRepository.save(Director.builder()
+                    .nomeCompleto(userToSave.getName())
+                    .user(userToSave)
+                    .direcao(direcao)
+                    .build());
+        }
 
         // TODO other here
 

@@ -51,6 +51,8 @@ public class TestemunhaServiceImpl implements TestemunhaService {
             throw new NotFoundException("Processo não encontrado");
         }
 
+        dto.setProcessoId(processo.getId());
+
         testemunhaRepository.findAll().stream()
                 .filter(t -> t.getNomeCompleto().equals(dto.getNomeCompleto()) && t.getNumeroBi().equals(dto.getNumeroBi()))
                 .findFirst().ifPresent(t -> {
@@ -75,6 +77,8 @@ public class TestemunhaServiceImpl implements TestemunhaService {
             User user = userService.currentUser();
             testemunha.setUser(user);
         }
+
+        testemunha.setProcesso(processo);
 
         Testemunha savedTestemunha = testemunhaRepository.save(testemunha);
 
@@ -156,6 +160,11 @@ public class TestemunhaServiceImpl implements TestemunhaService {
                 User user = userRepository.findById(dto.getUserId())
                         .orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
                 testemunha.setUser(user);
+            }
+            if (dto.getProcessoId() != null) {
+                Processo processo = processoRepository.findById(dto.getProcessoId())
+                        .orElseThrow(() -> new NotFoundException("Processo não encontrado"));
+                testemunha.setProcesso(processo);
             }
             testemunhaRepository.save(testemunha);
         }, () -> {
